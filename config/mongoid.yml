@@ -1,0 +1,6 @@
+development:
+  sessions:
+    default:
+      database: sbbsme
+      hosts:
+        - localhost:27017

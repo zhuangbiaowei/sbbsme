@@ -1,0 +1,80 @@
+<!doctype html>
+%html{:lang=>:en}
+	%head
+		%meta{:charset=>"utf-8"}
+		%title Welcome to the Supper BBS
+		%meta{:name=>"viewport",:content=>"width=device-width, initial-scale=1.0"}
+		%meta{:name=>"description",:content=>"Supper BBS for Me!"}
+		%meta{:name=>"author",:content=>"zhuangbiaowei"}
+		%link{:href=>"/stylesheets/styles.css",:rel=>"stylesheet"}
+		%link{:rel=>"stylesheet",:href=>"/stylesheets/jHtmlArea.css"}
+		%link{:rel=>"stylesheet",:href=>"/stylesheets/jquery-ui-1.7.2.custom.css"}		
+		%link{:rel=>"shortcut icon",:href=>"/ico/favicon.ico"}
+		%link{:rel=>"apple-touch-icon-precomposed",:sizes=>"144x144",:href=>"/ico/apple-touch-icon-144-precomposed.png"}
+		%link{:rel=>"apple-touch-icon-precomposed",:sizes=>"114x114",:href=>"/ico/apple-touch-icon-114-precomposed.png"}
+		%link{:rel=>"apple-touch-icon-precomposed",:sizes=>"72x72",:href=>"/ico/apple-touch-icon-72-precomposed.png"}
+		%link{:rel=>"apple-touch-icon-precomposed",:href=>"/ico/apple-touch-icon-57-precomposed.png"}
+		%script{:src=>"/javascripts/jquery.min.js"}
+	%body		
+		.navbar.navbar-fixed-top
+			.navbar-inner
+				.container-fluid
+					%a.btn.btn-navbar{"data-toggle"=>"collapse","data-target"=>".nav-collapse"}
+						%span.icon-bar
+						%span.icon-bar
+						%span.icon-bar
+					.brand Super BBS
+					.nav-collapse
+						%ul.nav
+							%li.active
+								%a{:href=>"/home"} Home
+							%li
+								%a{:href=>"/new"} Post New
+							%li
+								%a{:href=>"/last"} Last Post
+							%li.dropdown
+								%a{:href=>"#",:class=>"dropdown-toggle","data-toggle"=>"dropdown"}
+									Hot Tags
+									%b.caret
+								%ul.dropdown-menu
+									- @tags.each do |tag|
+										%li
+											%a{:href=>"/tags/#{tag.Id}"} 
+												= tag.Name
+						%form.navbar-search.pull-left
+							%input.search-query{:type=>"text",:placeholder=>"Search"}
+					- unless @current_user
+						.btn-group.pull-right
+							%a.btn.dropdown-toggle{"data-toggle"=>"dropdown",:href=>"#"}
+								login
+								%span.caret
+							%ul.dropdown-menu
+								%li
+									%a{:href=>"#",:onclick=>"javascript:location='/weibo/login'"} Weibo Login
+								%li
+									%a{:href=>"#",:onclick=>"javascript:location='/auth/google_oauth2'"} Google Login
+					- else
+						.btn-group.pull-right
+							%a.btn.dropdown-toggle{"data-toggle"=>"dropdown",:href=>"#"}
+								%img{:src=>"#{@current_user.AvatarURL}",:alt=>"#{@current_user.Name}",:width=>"16",:height=>"16"}
+								= @current_user.Name
+								%span.caret
+							%ul.dropdown-menu
+								%li
+									%a{:href=>"#"} Profile
+								%li.divider
+								%li
+									%a{:href=>"/logout"} Sign Out
+		= yield		
+		%script{:src=>"/javascripts/bootstrap-transition.js"}
+		%script{:src=>"/javascripts/bootstrap-alert.js"}
+		%script{:src=>"/javascripts/bootstrap-modal.js"}
+		%script{:src=>"/javascripts/bootstrap-dropdown.js"}
+		%script{:src=>"/javascripts/bootstrap-scrollspy.js"}
+		%script{:src=>"/javascripts/bootstrap-tab.js"}
+		%script{:src=>"/javascripts/bootstrap-tooltip.js"}
+		%script{:src=>"/javascripts/bootstrap-popover.js"}
+		%script{:src=>"/javascripts/bootstrap-button.js"}
+		%script{:src=>"/javascripts/bootstrap-collapse.js"}
+		%script{:src=>"/javascripts/bootstrap-carousel.js"}
+		%script{:src=>"/javascripts/bootstrap-typeahead.js"}

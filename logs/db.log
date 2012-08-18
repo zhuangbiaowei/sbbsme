@@ -1,0 +1,17 @@
+# Logfile created on 2012-07-26 16:09:43 +0800 by logger.rb/31641
+
+path=/root/sbbsme/mongoid.yml
+path=/root/sbbsme/mongoid.yml
+path=/root/sbbsme/mongoid.yml
+env=
+path=/root/sbbsme/mongoid.yml
+env=
+path=/root/sbbsme/mongoid.yml
+env=development
+settings={"sessions"=>{"default"=>{"database"=>"sbbsme", "hosts"=>["localhost:27017"]}}}
+path=./mongoid.yml
+env=
+settings=
+path=./mongoid.yml
+env=
+settings={"sessions"=>{"default"=>{"database"=>"sbbsme", "hosts"=>["localhost:27017"]}}}

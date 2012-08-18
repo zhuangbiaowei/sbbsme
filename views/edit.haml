@@ -1,0 +1,12 @@
+#container.container
+	.well
+		%form{:method=>'post',:action=>'/edit_post/'+@id,:id=>"post"}
+			Subject:
+			%input{:type=>'text',:name=>'subject',:size=>'45',:value=>@block.Subject}
+			%br
+			Tags:
+			%input{:type=>'text',:name=>'tags',:size=>'45',:value=>@tag_string}
+			%input{:type=>'hidden',:name=>'user_id',:id=>'user_id'}
+			%input{:type=>"submit",:value=>"submit"}
+%script{:type=>'text/javascript',:src=>'/javascripts/jquery-ui.min.js'}
+%script{:type=>'text/javascript',:src=>'/javascripts/jHtmlArea-0.7.0.js'}

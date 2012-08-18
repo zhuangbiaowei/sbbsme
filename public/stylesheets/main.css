@@ -1,0 +1,17 @@
+#nav_bar {
+	height: 36px;
+	padding: 5px;
+}
+#home {
+	display: inline;
+}
+
+#nav_bar #wb_connect_btn{
+	position: absolute;
+	display: inline;
+	right: 10px;
+}
+
+.avatar {
+	display: inline-block;
+}
