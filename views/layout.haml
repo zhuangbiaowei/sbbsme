@@ -41,6 +41,8 @@
 										%li
 											%a{:href=>"/tags/#{tag.Id}"} 
 												= tag.Name
+							%li
+								%a{:href=>"https://github.com/zhuangbiaowei/sbbsme"} On Github
 						%form.navbar-search.pull-left
 							%input.search-query{:type=>"text",:placeholder=>"Search"}
 					- unless @current_user
