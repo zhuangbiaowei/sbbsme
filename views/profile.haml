@@ -1,0 +1,22 @@
+.container
+	.container-fluid
+		.row-fluid
+			.span12.well
+				%h3 Profile
+		.row-fluid
+			.span4.well
+				%h3 My Posts
+				%ul
+					- @topics.each do |article|
+						%li
+							%a{:href=>"/post/#{article.Id}"}=article.Subject
+							%p= article.Body
+			.span4.well
+				%h3 My Blocks
+				%ul
+					- @blocks.each do |article|
+						%li
+							%a{:href=>"/post/#{article.Id}"}=article.Subject
+							%p= article.Body
+			.span4.well
+				%h3 My Watched

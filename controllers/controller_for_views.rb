@@ -57,3 +57,11 @@ get '/edit_post/:id' do
 	@tag_string=BlockTag.where(:BlockId=>@id).all.to_a.collect{|bt| Tag.where(:Id=>bt.TagId).first.Name}.join(",")
 	haml :edit
 end
+
+get '/profile' do
+        @current_user=session[:current_user]
+        @tags=Tag.all
+	@topics=Block.where(:AuthorId=>@current_user.Id,:Type=>'topic').all
+	@blocks=Block.in(Type:['comment','clone']).where(:AuthorId=>@current_user.Id).all
+	haml :profile
+end
