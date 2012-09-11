@@ -65,6 +65,7 @@ post '/post' do
 		block.Created_on=DateTime.now
 		block.AuthorId=session[:current_user].Id
 		block.Type="topic"
+		block.Public=params[:public].to_s.to_i
 		block.save
 		update_tags(block.id,params[:tags])
 		redirect "/post/"+block.Id

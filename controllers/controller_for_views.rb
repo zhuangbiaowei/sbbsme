@@ -1,6 +1,6 @@
 get '/home' do
 	@tags=Tag.all
-	@article_list=Block.where(:ParentId=>nil,:Type=>"topic").sort(Updated_on: -1).to_a
+	@article_list=Block.where(:ParentId=>nil,:Type=>"topic",:Public=>1).sort(Updated_on: -1).to_a
 	@current_user=session[:current_user]
 	haml :home
 end
@@ -13,7 +13,7 @@ get '/tags/:id' do
 	BlockTag.where(:TagId=>id).all.each do |bt|
 		block_ids<<bt.BlockId
 	end
-	@article_list=Block.in(:Id=>block_ids).all
+	@article_list=Block.in(:Id=>block_ids).where(:Public=>1).all
 	haml :home
 end
 
