@@ -53,7 +53,12 @@ get '/logout' do
 end
 
 get '/last' do
-	redirect '/post/'+Block.last.Id
+	block=Block.where(:Type=>'topic',:Public=>1).last
+	if block
+		redirect '/post/'+block.Id
+	else
+		redirect '/home'
+	end
 end
 
 post '/post' do
