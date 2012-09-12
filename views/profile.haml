@@ -3,6 +3,9 @@
 		.row-fluid
 			.span12.well
 				%h3 Profile
+				%img{:src=>@current_user.AvatarURL}
+				%br
+				=@current_user.Name
 		.row-fluid
 			.span4.well
 				%h3 My Posts
