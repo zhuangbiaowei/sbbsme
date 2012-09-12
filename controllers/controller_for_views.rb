@@ -65,3 +65,12 @@ get '/profile' do
 	@blocks=Block.in(Type:['comment','clone']).where(:AuthorId=>@current_user.Id).all
 	haml :profile
 end
+
+get '/user/:id' do
+	@current_user=session[:current_user]
+	@tags=Tag.all
+	@user=User.where(:Id=>params[:id]).first
+	@topics=Block.where(:AuthorId=>params[:id],:Public=>1,:Type=>'topic').all
+	@blocks=Block.in(Type:['comment','clone']).where(:AuthorId=>params[:id],:Public=>1).all
+	haml :user
+end
