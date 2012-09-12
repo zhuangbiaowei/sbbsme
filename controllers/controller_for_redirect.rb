@@ -85,6 +85,7 @@ post '/edit_post/:id' do
 		block=Block.where(:Id=>id).first
 		block.Subject=params[:subject]		
 		block.Updated_on=DateTime.now
+		block.Public=params[:public]
 		block.save
 		update_tags(id,params[:tags])
 		redirect "/post/"+block.Id

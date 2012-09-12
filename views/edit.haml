@@ -6,6 +6,10 @@
 			%br
 			Tags:
 			%input{:type=>'text',:name=>'tags',:size=>'45',:value=>@tag_string}
+			%br
+			Public?
+			%input{:type=>'checkbox',:name=>'public',:value=>1,:checked=>@block.Public==1}
+			%br
 			%input{:type=>'hidden',:name=>'user_id',:id=>'user_id'}
 			%input{:type=>"submit",:value=>"submit"}
 %script{:type=>'text/javascript',:src=>'/javascripts/jquery-ui.min.js'}
