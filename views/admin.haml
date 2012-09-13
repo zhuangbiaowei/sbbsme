@@ -1,0 +1,16 @@
+.container
+	.container-fluid
+		.row-fluid
+			.span6.well
+				%h3 Users
+				%ul
+					- @users.each do |user|
+						%li
+							%a{:href=>"/admin_user/#{user.Id}"}=user.Name
+			.span6.well
+				%h3 Blocks
+				%ul
+					- @blocks.each do |block|
+						%li
+							%a{:href=>"/post/#{block.Id}"}=block.Subject
+							%p= block.Body

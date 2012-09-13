@@ -1,0 +1,22 @@
+.container
+	.container-fluid
+		.row-fluid
+			.span2.well
+				%h3 Profile
+				%img{:src=>@user.AvatarURL}
+				%br
+				=@user.Name
+			.span5.well
+				%h3 Posts
+				%ul
+					- @topics.each do |article|
+						%li
+							%a{:href=>"/post/#{article.Id}"}=article.Subject
+							%p= article.Body
+			.span5.well
+				%h3 Blocks
+				%ul
+					- @blocks.each do |article|
+						%li
+							%a{:href=>"/post/#{article.Id}"}=article.Subject
+							%p= article.Body

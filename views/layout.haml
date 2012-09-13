@@ -65,6 +65,10 @@
 								%li
 									%a{:href=>"/profile"} Profile
 								%li.divider
+								- if @current_user.Type==1
+									%li
+										%a{:href=>"/admin"} Admin
+									%li.divider
 								%li
 									%a{:href=>"/logout"} Sign Out
 		= yield		
