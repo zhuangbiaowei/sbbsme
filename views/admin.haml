@@ -12,5 +12,5 @@
 				%ul
 					- @blocks.each do |block|
 						%li
-							%a{:href=>"/post/#{block.Id}"}=block.Subject
+							%a{:href=>"/post/#{if block.ParentId;block.ParentId;else;block.Id;end}"}=block.Subject
 							%p= block.Body
