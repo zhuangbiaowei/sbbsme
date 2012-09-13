@@ -77,17 +77,27 @@ end
 
 get '/admin_user/:id' do
 	@current_user=session[:current_user]
-	@tags=Tag.all
-	@user=User.where(:Id=>params[:id]).first
-	@topics=Block.where(:AuthorId=>params[:id],:Type=>'topic').all
-	@blocks=Block.in(Type:['comment','clone']).where(:AuthorId=>params[:id]).all
-	haml :admin_user
+	if @current_user
+		if @current_user.Type==1
+			@tags=Tag.all
+			@user=User.where(:Id=>params[:id]).first
+			@topics=Block.where(:AuthorId=>params[:id],:Type=>'topic').all
+			@blocks=Block.in(Type:['comment','clone']).where(:AuthorId=>params[:id]).all
+			haml :admin_user
+		end
+	end
+	redirect '/home'
 end
 
 get '/admin' do
 	@current_user=session[:current_user]
-	@tags=Tag.all
-	@users=User.all
-	@blocks=Block.all
-	haml :admin
+	if @current_user
+		if @current_user.Type==1
+			@tags=Tag.all
+			@users=User.all
+			@blocks=Block.all
+			haml :admin
+		end
+	end
+	redirect '/home'
 end
