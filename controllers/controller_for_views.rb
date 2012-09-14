@@ -25,15 +25,19 @@ end
 
 get '/post/:id' do
 	@current_user=session[:current_user]
-	@tags=Tag.all
-	@id=params[:id]
-	block=Block.where(:Id=>@id).first
 	if @current_user
-		@is_author=(@current_user.Id.to_s==block.AuthorId.to_s)
+		@tags=Tag.all
+		@id=params[:id]
+		block=Block.where(:Id=>@id).first
+		if @current_user
+			@is_author=(@current_user.Id.to_s==block.AuthorId.to_s||@current_user.Type==1)
+		else
+			@is_author=false
+		end
+		haml :post
 	else
-		@is_author=false
+		redirect '/view_article/'+params[:id]
 	end
-	haml :post
 end
 
 get '/view_article/:id' do
