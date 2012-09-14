@@ -84,9 +84,12 @@ get '/admin_user/:id' do
 			@topics=Block.where(:AuthorId=>params[:id],:Type=>'topic').all
 			@blocks=Block.in(Type:['comment','clone']).where(:AuthorId=>params[:id]).all
 			haml :admin_user
+		else
+			redirect '/home'
 		end
+	else
+		redirect '/home'
 	end
-	redirect '/home'
 end
 
 get '/admin' do
@@ -97,7 +100,10 @@ get '/admin' do
 			@users=User.all
 			@blocks=Block.all
 			haml :admin
+		else
+			redirect '/home'
 		end
-	end
-	redirect '/home'
+	else
+		redirect '/home'
+	end	
 end
