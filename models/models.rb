@@ -70,3 +70,11 @@ class Watch
 	field :UserId, type: String
 	field :Created_on, type: DateTime, default: Time.now
 end
+
+class CachedContent
+	include Mongoid::Document
+	field :Id, type: String
+	field :AuthorId, type: String
+	field :Subject, type: String
+	field :Body, type: String
+end

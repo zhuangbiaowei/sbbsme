@@ -8,14 +8,17 @@
 		%meta{:name=>"author",:content=>"zhuangbiaowei"}
 		%link{:href=>"/stylesheets/styles.css",:rel=>"stylesheet"}
 		%link{:rel=>"stylesheet",:href=>"/stylesheets/jHtmlArea.css"}
-		%link{:rel=>"stylesheet",:href=>"/stylesheets/jquery-ui-1.7.2.custom.css"}		
+		%link{:rel=>"stylesheet",:href=>"/stylesheets/jquery-ui-1.7.2.custom.css"}
 		%link{:rel=>"shortcut icon",:href=>"/ico/favicon.ico"}
 		%link{:rel=>"apple-touch-icon-precomposed",:sizes=>"144x144",:href=>"/ico/apple-touch-icon-144-precomposed.png"}
 		%link{:rel=>"apple-touch-icon-precomposed",:sizes=>"114x114",:href=>"/ico/apple-touch-icon-114-precomposed.png"}
 		%link{:rel=>"apple-touch-icon-precomposed",:sizes=>"72x72",:href=>"/ico/apple-touch-icon-72-precomposed.png"}
 		%link{:rel=>"apple-touch-icon-precomposed",:href=>"/ico/apple-touch-icon-57-precomposed.png"}
 		%script{:src=>"/javascripts/jquery.min.js"}
-	%body		
+		%script{:src=>'/javascripts/jquery-ui.min.js'}
+		%script{:src=>'/javascripts/jHtmlArea-0.7.0.js'}
+		%script{:src=>"/javascripts/edit.js"}
+	%body
 		.navbar.navbar-fixed-top
 			.navbar-inner
 				.container-fluid
@@ -71,7 +74,7 @@
 									%li.divider
 								%li
 									%a{:href=>"/logout"} Sign Out
-		= yield		
+		= yield
 		%script{:src=>"/javascripts/bootstrap-transition.js"}
 		%script{:src=>"/javascripts/bootstrap-alert.js"}
 		%script{:src=>"/javascripts/bootstrap-modal.js"}

@@ -2,7 +2,7 @@
 	.well
 		%form{:method=>'post',:action=>'/post',:id=>"post"}
 			Subject:
-			%input{:type=>'text',:name=>'subject',:size=>'45'}
+			%input{:type=>'text',:name=>'subject',:id=>'subject',:size=>'45'}
 			%br
 			Tags:
 			%input{:type=>'text',:name=>'tags',:size=>'45'}
@@ -17,5 +17,5 @@
 			%input{:type=>"submit",:value=>"submit"}
 %script{:type=>'text/javascript',:src=>'/javascripts/jquery-ui.min.js'}
 %script{:type=>'text/javascript',:src=>'/javascripts/jHtmlArea-0.7.0.js'}
-%script{:type=>'text/javascript'}	
-	$("#txtBody").width($("#container").width()-40);$("#txtBody").htmlarea();
+%script{:type=>'text/javascript'}
+	$("#txtBody").width($("#container").width()-40);htmlarea_with_cache("#txtBody","new");

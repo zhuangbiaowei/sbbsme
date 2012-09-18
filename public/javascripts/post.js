@@ -1,26 +1,5 @@
 var block_list={};
 
-function check_keep_content(type,id){
-	$.get("/get_keep_content/add/"+id,function(result){		
-		
-	});
-}
-
-function keep_content(type,id,content){
-	/*
-	if(type=="add"){
-		var text=check_keep_content(type,id);
-		$("#txtDefaultHtmlArea").htmlarea('dispose');
-		$("#txtDefaultHtmlArea")[0].value="text";
-		$("#txtDefaultHtmlArea").htmlarea();	
-	}
-	if($("#txtDefaultHtmlArea")[0].value==content){
-
-	}
-	setTimeout(keep_content(id,content), 1000);
-	*/
-}
-
 function close_dialog(id){
 	if ($("#"+id+" .bar #dialog").length>0){
 		$("#"+id+" .bar #dialog").remove();
@@ -104,8 +83,7 @@ function add_block(id,type){
 	dialog_html=dialog_html+"</div>";
 	$("#"+id+" .bar").append(dialog_html);
 	$("#txtDefaultHtmlArea").width($("#"+id+" .bar").width());
-	$("#txtDefaultHtmlArea").htmlarea();
-	keep_content('add',id,'');
+	htmlarea_with_cache("#txtDefaultHtmlArea","add_"+type+"_"+id);
 }
 
 function add_left(id){
@@ -190,10 +168,9 @@ function edit_block(id){
 	dialog_html=dialog_html+"<button class=\"btn btn-primary\" onclick=\"javascript:edit_block_text('"+id+"')\">submit</button>";
 	dialog_html=dialog_html+"&nbsp;&nbsp;<button class=\"btn btn-inverse\" onclick=\"javascript:close_dialog('"+id+"');\">close</button>";
 	dialog_html=dialog_html+"</div>";
-	$("#"+id+" .bar").append(dialog_html);	
+	$("#"+id+" .bar").append(dialog_html);
 	$("#txtDefaultHtmlArea").width($("#"+id+" .bar").width());
-	$("#txtDefaultHtmlArea").htmlarea();
-	keep_content('edit',id,block_list[id]);
+	htmlarea_with_cache("#txtDefaultHtmlArea","edit_"+id);	
 }
 
 function make_block_html(block,type,avatar_html){
@@ -201,7 +178,7 @@ function make_block_html(block,type,avatar_html){
 		var html="<div class =\"component\" id=\"b"+block.Id+"\">";
 		html=html+"<div class=\"hide blockid\">"+block.Id+"<br /></div>\n";
 	} else {
-		var html="<div class =\"component comment well\" id=\"b"+block.Id+"\">";	
+		var html="<div class =\"component comment well\" id=\"b"+block.Id+"\">";
 	}
 
 	if (block.Subject!=null && type!='main'){
@@ -209,7 +186,7 @@ function make_block_html(block,type,avatar_html){
 			html=html+"\n<strong><a href=\"/post/"+block.ParentId+"\">"+block.Subject+"</a></strong><br/>\n";
 		} else {
 			block.Id=block.Id.substring(1,26);
-			html=html+"\n<strong><a href=\"/post/"+block.Id+"\">"+block.Subject+"</a></strong><br/>\n";			
+			html=html+"\n<strong><a href=\"/post/"+block.Id+"\">"+block.Subject+"</a></strong><br/>\n";
 		}
 	}
 	if(block.ParentId==null){
@@ -257,8 +234,8 @@ function add_hover(id){
 
 function add_header_hover(){
 	$("#header").hover(
-		function(){			
-			$(this).addClass("hover");			
+		function(){
+			$(this).addClass("hover");
 		},
 		function(){
 			$(this).removeClass("hover");
@@ -294,7 +271,7 @@ function show_left_block(top,article,sub_block){
 				paintStyle:{lineWidth:3,strokeStyle:show_block.Type},
 				detachable:false,
 				hoverPaintStyle:{strokeStyle:"#dbe300"},
-				endpoint:"Blank",		
+				endpoint:"Blank",
 				anchors:[ [ 0, 0.5, 0, 0 ], [1, 0.5, 0, 0] ],
 				overlays:[ ["PlainArrow", {location:1, width:10, length:6} ]]
 			};
@@ -320,7 +297,7 @@ function show_right_block(top,article,sub_block){
 				paintStyle:{lineWidth:3,strokeStyle:show_block.Type},
 				detachable:false,
 				hoverPaintStyle:{strokeStyle:"#dbe300"},
-				endpoint:"Blank",		
+				endpoint:"Blank",
 				anchors:[ [ 0, 0.5, 0, 0 ], [1, 0.5, 0, 0] ],
 				overlays:[ ["PlainArrow", {location:1, width:10, length:6} ]]
 			};
@@ -339,7 +316,7 @@ function show_article(article){
 			$("#tags").append("&nbsp;<button class=\"btn btn-mini\" onclick=\"javascript:window.location='/tags/"+tag.Id+"';\">"+tag.Name+"</button>");
 		}
 		add_header_hover();
-		$("#title")[0].innerHTML=article.main_block.Subject;		
+		$("#title")[0].innerHTML=article.main_block.Subject;
 		$("#middle_sortable").append(make_block_html(article.main_block,"main",article.users[article.main_block.AuthorId]));
 		add_hover("#b"+article.main_block.Id);
 		left_top=show_left_block(left_top,article,article.main_block);
@@ -365,7 +342,7 @@ function show_article(article){
 }
 
 jsPlumb.bind("ready", function() {
-	jsPlumb.setRenderMode(jsPlumb.SVG);	
+	jsPlumb.setRenderMode(jsPlumb.SVG);
 	$.get('/article/'+article_id,function(result){
 		var article=$.parseJSON(result);
 		show_article(article);

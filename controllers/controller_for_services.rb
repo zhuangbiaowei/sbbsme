@@ -280,5 +280,36 @@ post '/delete_link' do
 		pblock.save
 	end
 	BlockLink.where(:LeftId=>left_id,:RightId=>id).delete
-	return "OK"	
+	return "OK"
+end
+
+get '/cache/:id' do	
+	@current_user=session[:current_user]
+	if @current_user
+		content=CachedContent.where(:Id=>params[:id],:AuthorId=>@current_user.Id).first
+		if content
+			return content.to_json
+		end
+	end
+	return ""
+end
+
+post '/cache/:id' do
+	@current_user=session[:current_user]
+	if @current_user
+		CachedContent.where(:Id=>params[:id],:AuthorId=>@current_user.Id).delete
+		content=CachedContent.new
+		content.Id=params[:id]
+		content.AuthorId=@current_user.Id
+		content.Subject=params[:subject]
+		content.Body=params[:body]
+		content.save
+	end
+end
+
+delete '/cache/:id' do
+	@current_user=session[:current_user]
+	if @current_user
+		CachedContent.where(:Id=>params[:id],:AuthorId=>@current_user.Id).delete
+	end
 end
