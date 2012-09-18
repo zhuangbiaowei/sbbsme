@@ -73,6 +73,7 @@ post '/post' do
 		block.Public=params[:public].to_s.to_i
 		block.save
 		update_tags(block.id,params[:tags])
+		CachedContent.where(:Id=>'new',:AuthorId=>session[:current_user].Id).delete
 		redirect "/post/"+block.Id
 	else
 		redirect "/home"

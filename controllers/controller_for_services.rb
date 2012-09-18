@@ -93,6 +93,8 @@ post '/append_block/:id' do
 	new_block.Created_on=DateTime.now
 	new_block.Type="sub"
 	new_block.save
+	cache_id="add_append_b"+id
+	CachedContent.where(:Id=>cache_id,:AuthorId=>user_id).delete
 	return "OK"
 end
 
@@ -122,6 +124,8 @@ post '/comment_block/:id' do
 	link.Type=comment_type
 	link.Created_on=DateTime.now
 	link.save
+	cache_id="add_comment_b"+id
+	CachedContent.where(:Id=>cache_id,:AuthorId=>user_id).delete
 	return "OK"
 end
 
@@ -165,7 +169,9 @@ post '/edit_block/:id' do
 		parent_block=Block.where(:Id=>block.ParentId).first
 		parent_block.Updated_on=DateTime.now
 		parent_block.save
-	end	
+	end
+	cache_id="edit_b"+id
+	CachedContent.where(:Id=>cache_id,:AuthorId=>block.AuthorId).delete
 	return "OK"
 end
 
