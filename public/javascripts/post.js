@@ -198,6 +198,7 @@ function make_block_html(block,type,avatar_html){
 		if(is_author==true){
 			html=html+"<button class=\"btn btn-danger hide\" onclick=\"javascript:delete_block('b"+block.Id+"')\">delete</button>";
 			html=html+"&nbsp;<button class=\"btn btn-warning hide\" onclick=\"javascript:edit_block('b"+block.Id+"')\">edit</button>";
+			html=html+"&nbsp;<button class=\"btn btn-info hide\" onclick=\"javascript:clone_block('b"+block.Id+"')\">clone</button>";
 			html=html+"&nbsp;<div class=\"btn-group pull-right hide\">\n";
 			html=html+"<a class=\"btn btn-inverse dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">\n";
 			html=html+"add<span class=\"caret\"></span></a>\n";

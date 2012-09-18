@@ -15,32 +15,40 @@ get '/article/:id' do
 	article[:left_blocks][id]=[]
 	BlockLink.where(:RightId=>id).all.sort(Order: -1,Created_on: -1).each do |link|
 		left_block=Block.where(:Id=>link.LeftId).first
-		left_block.Type=link.Type
-		article[:left_blocks][id]<<left_block
-		article[:users][left_block.AuthorId]=user_avatar(left_block.AuthorId)
+		if (left_block.Type=="clone" and left_block.AuthorId==session[:current_user].Id) or left_block.Type!="clone"
+			left_block.Type=link.Type
+			article[:left_blocks][id]<<left_block
+			article[:users][left_block.AuthorId]=user_avatar(left_block.AuthorId)
+		end
 	end
 	article[:right_blocks][id]=[]
 	BlockLink.where(:LeftId=>id).all.sort(Order: -1,Created_on: -1).each do |link|
 		right_block=Block.where(:Id=>link.RightId).first
-		right_block.Type=link.Type
-		article[:right_blocks][id]<<right_block
-		article[:users][right_block.AuthorId]=user_avatar(right_block.AuthorId)
+		if (right_block.Type=="clone" and right_block.AuthorId==session[:current_user].Id) or right_block.Type!="clone"
+			right_block.Type=link.Type
+			article[:right_blocks][id]<<right_block
+			article[:users][right_block.AuthorId]=user_avatar(right_block.AuthorId)
+		end
 	end
 	Block.where(:ParentId=>id).all.sort(Order: 1).each do |block|
 		article[:sub_blocks]<<block
 		article[:left_blocks][block.Id]=[]
 		BlockLink.where(:RightId=>block.Id).all.sort(Order: -1,Created_on: -1).each do |link|
 			left_block=Block.where(:Id=>link.LeftId).first
-			left_block.Type=link.Type
-			article[:left_blocks][block.Id]<<left_block
-			article[:users][left_block.AuthorId]=user_avatar(left_block.AuthorId)
+			if (left_block.Type=="clone" and left_block.AuthorId==session[:current_user].Id) or left_block.Type!="clone" 
+				left_block.Type=link.Type
+				article[:left_blocks][block.Id]<<left_block
+				article[:users][left_block.AuthorId]=user_avatar(left_block.AuthorId)
+			end
 		end
 		article[:right_blocks][block.Id]=[]
 		BlockLink.where(:LeftId=>block.Id).all.sort(Order: -1,Created_on: -1).each do |link|
 			right_block=Block.where(:Id=>link.RightId).first
-			right_block.Type=link.Type
-			article[:right_blocks][block.Id]<<right_block
-			article[:users][right_block.AuthorId]=user_avatar(right_block.AuthorId)
+			if (right_block.Type=="clone" and right_block.AuthorId==session[:current_user].Id) or right_block.Type!="clone"
+				right_block.Type=link.Type
+				article[:right_blocks][block.Id]<<right_block
+				article[:users][right_block.AuthorId]=user_avatar(right_block.AuthorId)
+			end
 		end
 	end
 	article.to_json
