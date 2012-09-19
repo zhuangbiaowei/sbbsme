@@ -62,6 +62,7 @@ post '/append_block/:id' do
 	text=params[:text]
 	block=Block.where(:Id=>id).first
 	user_id=session[:current_user].Id
+	is_public=block.Public
 	if block.ParentId
 		pid=block.ParentId
 		pblock=Block.where(:Id=>pid).first
@@ -75,6 +76,7 @@ post '/append_block/:id' do
 		end
 		pblock.Updated_on=DateTime.now
 		pblock.save
+		is_public=pblock.Public
 	else
 		pid=block.Id
 		subject=block.Subject
@@ -100,6 +102,7 @@ post '/append_block/:id' do
 	new_block.AuthorId=user_id
 	new_block.Created_on=DateTime.now
 	new_block.Type="sub"
+	new_block.Public=is_public
 	new_block.save
 	cache_id="add_append_b"+id
 	CachedContent.where(:Id=>cache_id,:AuthorId=>user_id).delete
@@ -125,6 +128,7 @@ post '/comment_block/:id' do
 	new_block.Created_on=DateTime.now
 	new_block.AuthorId=user_id
 	new_block.Type="comment"
+	new_block.Public=block.Public
 	new_block.save
 	link=BlockLink.new
 	link.LeftId=id
@@ -268,6 +272,7 @@ post '/clone_block/:id' do
 	new_block.Created_on=DateTime.now
 	new_block.AuthorId=session[:current_user].Id
 	new_block.Type="clone"
+	new_block.Public=block.Public
 	new_block.save
 	link=BlockLink.new
 	link.LeftId=id

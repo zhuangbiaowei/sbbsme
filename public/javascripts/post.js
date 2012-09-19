@@ -189,7 +189,7 @@ function make_block_html(block,type,avatar_html){
 			html=html+"\n<strong><a href=\"/post/"+block.Id+"\">"+block.Subject+"</a></strong><br/>\n";
 		}
 	}
-	if(block.ParentId==null){
+	if(block.ParentId==null && block.Public==1){
 		html=html+"\n<div id=\"user_"+block.AuthorId+"\" class=\"avatar\">"+avatar_html+"</div>";
 	}
 	html=html+block.Body+"<br/>\n";
