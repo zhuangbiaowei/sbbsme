@@ -113,5 +113,7 @@ get '/admin' do
 end
 
 get '/recent' do
+        @current_user=session[:current_user]
+        @tags=Tag.all
 	haml :recent
 end
