@@ -111,3 +111,7 @@ get '/admin' do
 		redirect '/home'
 	end	
 end
+
+get '/recent' do
+	haml :recent
+end
