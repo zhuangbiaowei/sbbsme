@@ -213,6 +213,8 @@ function make_block_html(block,type,avatar_html){
 			html=html+"<button class=\"btn btn-info hide\" onclick=\"javascript:clone_block('b"+block.Id+"')\">clone</button>";
 			html=html+"&nbsp;<button class=\"btn btn-primary hide\" onclick=\"javascript:add_block('b"+block.Id+"','comment')\">comment</button>";
 		}
+	} else {
+		html=html+"<div class=\"pull-right\" style=\"font-size:10px;color:#777;\"><i class=\"icon-comment\"></i>"+block.RightBlockCount+"</div>";
 	}
 	html=html+"</div>"
 	return html;

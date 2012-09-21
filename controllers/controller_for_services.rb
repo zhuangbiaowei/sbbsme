@@ -120,6 +120,8 @@ post '/comment_block/:id' do
 	user_id=session[:current_user].Id
 	block=Block.where(:Id=>id).first
 	block.Updated_on=DateTime.now
+	block.RightBlockCount=0 unless block.RightBlockCount
+	block.RightBlockCount=block.RightBlockCount+1
 	block.save
 	new_block=Block.new
 	new_block.Id=new_block.id.to_s
@@ -142,6 +144,7 @@ post '/comment_block/:id' do
 end
 
 post '/delete_block' do
+	re_count_id_list=[]
 	unless session[:current_user]
 		return "please login"
 	end
@@ -150,12 +153,19 @@ post '/delete_block' do
 	unless block.ParentId
 		block.delete
 		BlockLink.where(:LeftId=>id).delete
+		BlockLink.where(:RightId=>id).all.each do |bl|
+			re_count_id_list << bl.LeftId
+		end
 		BlockLink.where(:RightId=>id).delete
 		Block.where(:ParentId=>id).all.each do |b|
 			BlockLink.where(:LeftId=>b.Id).delete
+			BlockLink.where(:RightId=>b.Id).all.each do |bl|
+				re_count_id_list << bl.LeftId
+			end
 			BlockLink.where(:RightId=>b.Id).delete
 		end
 		Block.where(:ParentId=>id).delete
+		re_count_right_block(re_count_id_list)
 		return "OK_ALL"
 	else
 		parent_block=Block.where(:Id=>block.ParentId).first
@@ -163,7 +173,11 @@ post '/delete_block' do
 		parent_block.save
 		block.delete
 		BlockLink.where(:LeftId=>id).delete
+		BlockLink.where(:RightId=>id).all.each do |bl|
+			re_count_id_list << bl.LeftId
+		end
 		BlockLink.where(:RightId=>id).delete
+		re_count_right_block(re_count_id_list)
 		return "OK"
 	end
 end
@@ -208,6 +222,10 @@ post '/add_left_block/:id' do
 	link.Type=comment_type
 	link.Created_on=DateTime.now
 	link.save
+	left_block=Block.where(:Id=>left_id).first
+	left_block.RightBlockCount=0 unless left_block.RightBlockCount
+	left_block.RightBlockCount=left_block.RightBlockCount+1
+	left_block.save
 	return "OK"
 end
 
@@ -264,6 +282,9 @@ post '/clone_block/:id' do
 	end
 	id=params[:id][1..-1]
 	block=Block.where(:Id=>id).first
+	block.RightBlockCount=0 unless block.RightBlockCount
+	block.RightBlockCount=block.RightBlockCount+1
+	block.save
 	link_type="#000"
 	new_block=Block.new
 	new_block.Id=new_block.id.to_s
@@ -299,6 +320,9 @@ post '/delete_link' do
 		pblock.save
 	end
 	BlockLink.where(:LeftId=>left_id,:RightId=>id).delete
+	left_block=Block.where(:Id=>left_id).first	
+	left_block.RightBlockCount=left_block.RightBlockCount-1
+	left_block.save
 	return "OK"
 end
 

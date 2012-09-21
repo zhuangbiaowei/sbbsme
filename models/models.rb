@@ -20,6 +20,7 @@ class Block
 	field :Status, type: String
 	field :Type, type: String
 	field :Public, type: Integer
+	field :RightBlockCount, type: Integer, default: 0
 	field :Created_on, type: DateTime, default: Time.now
 	field :Updated_on, type: DateTime, default: Time.now
 end
