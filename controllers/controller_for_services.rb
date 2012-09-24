@@ -60,19 +60,19 @@ post '/append_block/:id' do
 	end
 	id=params[:id][1..-1]
 	text=params[:text]
-	block=Block.where(:Id=>id).first
+	block=Block.where(:Id=>id).to_a[0]
 	user_id=session[:current_user].Id
 	is_public=block.Public
 	if block.ParentId
 		pid=block.ParentId
-		pblock=Block.where(:Id=>pid).first
+		pblock=Block.where(:Id=>pid).to_a[0]
 		a_uid=pblock.AuthorId
 		subject=pblock.Subject
-		next_block=Block.where(:ParentId=>pid,:Order.gt=>block.Order).first
+		next_block=Block.where(:ParentId=>pid,:Order.gt=>block.Order).sort(Order: 1).to_a[0]
 		if next_block
-			order=(block.Order+next_block.Order)/2
+			order=(block.Order+next_block.Order)/2.0
 		else
-			order=block.Order+1
+			order=block.Order+1.0
 		end
 		pblock.Updated_on=DateTime.now
 		pblock.save
@@ -81,11 +81,11 @@ post '/append_block/:id' do
 		pid=block.Id
 		subject=block.Subject
 		a_uid=block.AuthorId
-		first_block=Block.where(:ParentId=>pid).sort(Order: 1).first
+		first_block=Block.where(:ParentId=>pid).sort(Order: 1).to_a[0]
 		if first_block
-			order=first_block.Order/2
+			order=first_block.Order/2.0
 		else
-			order=1
+			order=1.0
 		end
 		block.Updated_on=DateTime.now
 		block.save

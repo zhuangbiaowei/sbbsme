@@ -19,3 +19,10 @@ def add_block_link(left_id,right_id,type)
 	bl.Type=type
 	bl.save
 end
+
+def recount_right_block
+	Block.all.each do |b|
+		b.RightBlockCount=BlockLink.where(:LeftId=>b.Id).count
+		b.save
+	end
+end

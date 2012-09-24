@@ -16,7 +16,7 @@ class Block
 	field :Subject, type: String
 	field :Body, type: String
 	field :AuthorId, type: String
-	field :Order, type: Float
+	field :Order, type: Float, default: 0.0
 	field :Status, type: String
 	field :Type, type: String
 	field :Public, type: Integer
