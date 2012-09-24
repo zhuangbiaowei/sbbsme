@@ -26,3 +26,15 @@ def recount_right_block
 		b.save
 	end
 end
+
+def b(id)
+	Block.find(id)
+end
+
+def lb(id)
+	BlockLink.where(:RightId=>id).all.to_a
+end
+
+def rb(id)
+	BlockLink.where(:LeftId=>id).all.to_a
+end
