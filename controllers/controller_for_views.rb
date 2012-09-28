@@ -1,3 +1,5 @@
+require 'redis'
+
 get '/home' do
 	@tags=Tag.all
 	@article_list=Block.where(:ParentId=>nil,:Type=>"topic",:Public=>1).sort(Updated_on: -1).to_a
@@ -113,7 +115,17 @@ get '/admin' do
 end
 
 get '/recent' do
-        @current_user=session[:current_user]
-        @tags=Tag.all
+	@current_user=session[:current_user]
+	@tags=Tag.all
+	@msgs = []
+
+	if @current_user	
+		r=Redis.new
+		id=@current_user.Id
+		while v=r.rpop(id)	do
+			@msgs << v
+		end
+	end
+
 	haml :recent
 end
