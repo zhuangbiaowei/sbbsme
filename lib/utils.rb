@@ -14,3 +14,16 @@ def re_count_right_block(re_count_id_list)
 		b.save
 	end
 end
+
+def get_msg_count(user)
+	if user
+		r=Redis.new
+		return r.exists("#{user.Id}_count")? r.get("#{user.Id}_count") : 0
+	else
+		return 0
+	end
+end
+
+def is_followed(from_id,to_id)
+	return Watch.where(:UserId=>from_id,:WatchedId=>to_id,:WatchType=>'user').first
+end

@@ -356,3 +356,21 @@ delete '/cache/:id' do
 		CachedContent.where(:Id=>params[:id],:AuthorId=>@current_user.Id).delete
 	end
 end
+
+post '/follow_user/:id' do
+	to_user_id=params[:id]
+	from_user_id=params[:from_user_id]
+	w=Watch.new
+	w.UserId=from_user_id
+	w.WatchedId=to_user_id
+	w.WatchType='user'
+	w.save
+	"OK"
+end
+
+post '/unfollow_user/:id' do
+	to_user_id=params[:id]
+	from_user_id=params[:from_user_id]
+	Watch.where(:UserId=>from_user_id,:WatchedId=>to_user_id,:WatchType=>'user').delete
+	"OK"
+end

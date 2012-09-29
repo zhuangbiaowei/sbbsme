@@ -6,6 +6,16 @@
 				%img{:src=>@user.AvatarURL}
 				%br
 				=@user.Name
+				%br
+				- if @is_followed
+					%button#follow.btn.btn-danger{:onclick=>"unfollow_user('"+@user.Id+"','"+@current_user.Id+"');"}
+						Unfollow
+				- if @is_unfollow
+					%button#follow.btn.btn-info{:onclick=>"follow_user('"+@user.Id+"','"+@current_user.Id+"');"}
+						Follow
+				- if @is_me
+					%button.btn
+						This is me
 			.span5.well
 				%h3 Posts
 				%ul
@@ -20,3 +30,4 @@
 						%li
 							%a{:href=>"/post/#{article.Id}"}=article.Subject
 							%p= article.Body
+%script{:src=>"/javascripts/user.js"}

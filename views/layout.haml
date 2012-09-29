@@ -34,7 +34,12 @@
 							%li
 								%a{:href=>"/new"} Post New
 							%li
-								%a{:href=>"/recent"} Recent
+								%a{:href=>"/recent"}
+									Recent
+									- if @msg_count.to_i>0
+										&nbsp;&nbsp;&nbsp;
+										%span.badge.unread
+											= @msg_count
 							%li.dropdown
 								%a{:href=>"#",:class=>"dropdown-toggle","data-toggle"=>"dropdown"}
 									Hot Tags

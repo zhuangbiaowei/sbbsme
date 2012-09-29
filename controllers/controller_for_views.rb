@@ -4,12 +4,14 @@ get '/home' do
 	@tags=Tag.all
 	@article_list=Block.where(:ParentId=>nil,:Type=>"topic",:Public=>1).sort(Updated_on: -1).to_a
 	@current_user=session[:current_user]
+	@msg_count = get_msg_count(@current_user)
 	haml :home
 end
 
 get '/tags/:id' do
 	@tags=Tag.all
 	@current_user=session[:current_user]
+	@msg_count = get_msg_count(@current_user)
 	id=params[:id]
 	block_ids=[]
 	BlockTag.where(:TagId=>id).all.each do |bt|
@@ -21,12 +23,14 @@ end
 
 get '/new' do
 	@current_user=session[:current_user]
-	@tags=Tag.all	
+	@tags=Tag.all
+	@msg_count = get_msg_count(@current_user)
 	haml :new
 end
 
 get '/post/:id' do
 	@current_user=session[:current_user]
+	@msg_count = get_msg_count(@current_user)
 	if @current_user
 		@tags=Tag.all
 		@id=params[:id]
@@ -44,6 +48,7 @@ end
 
 get '/view_article/:id' do
 	@current_user=session[:current_user]
+	@msg_count = get_msg_count(@current_user)
 	@tags=Tag.all
 	@id=params[:id]	
 	block=Block.where(:Id=>@id).first
@@ -57,6 +62,7 @@ end
 
 get '/edit_post/:id' do
 	@current_user=session[:current_user]
+	@msg_count = get_msg_count(@current_user)
 	@tags=Tag.all
 	@id=params[:id]
 	@block=Block.where(:Id=>@id).first
@@ -66,6 +72,7 @@ end
 
 get '/profile' do
 	@current_user=session[:current_user]
+	@msg_count = get_msg_count(@current_user)
 	@tags=Tag.all
 	@topics=Block.where(:AuthorId=>@current_user.Id,:Type=>'topic').all
 	@blocks=Block.in(Type:['comment','clone']).where(:AuthorId=>@current_user.Id).all
@@ -74,15 +81,28 @@ end
 
 get '/user/:id' do
 	@current_user=session[:current_user]
+	@msg_count = get_msg_count(@current_user)
 	@tags=Tag.all
 	@user=User.where(:Id=>params[:id]).first
 	@topics=Block.where(:AuthorId=>params[:id],:Public=>1,:Type=>'topic').all
 	@blocks=Block.in(Type:['comment','clone']).where(:AuthorId=>params[:id],:Public=>1).all
+	if @current_user
+		if @current_user.Id==@user.Id
+			@is_me=true
+		else
+			if is_followed(@current_user.Id,@user.Id)
+				@is_followed=true
+			else
+				@is_unfollow=true
+			end
+		end
+	end
 	haml :user
 end
 
 get '/admin_user/:id' do
 	@current_user=session[:current_user]
+	@msg_count = get_msg_count(@current_user)
 	if @current_user
 		if @current_user.Type==1
 			@tags=Tag.all
@@ -100,6 +120,7 @@ end
 
 get '/admin' do
 	@current_user=session[:current_user]
+	@msg_count = get_msg_count(@current_user)
 	if @current_user
 		if @current_user.Type==1
 			@tags=Tag.all
@@ -115,7 +136,7 @@ get '/admin' do
 end
 
 get '/recent' do
-	@current_user=session[:current_user]
+	@current_user=session[:current_user]	
 	@tags=Tag.all
 	@msgs = []
 
@@ -125,6 +146,8 @@ get '/recent' do
 		while v=r.rpop(id)	do
 			@msgs << v
 		end
+		r.del("#{id}_count")
+		@msg_count = 0
 	end
 
 	haml :recent

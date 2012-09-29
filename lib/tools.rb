@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'mongoid'
-require './config/config'
 require './models/models'
+require './config/config'
 
 def add_block(id,subject,body,parent_id=nil)
 	b=Block.new
