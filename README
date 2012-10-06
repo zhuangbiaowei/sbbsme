@@ -1,5 +1,8 @@
 Welcome visit demo site: http://sbbs.me/
 
+0.045
+Send Follow message by redis list.
+
 0.04
 Follow/Unfollow a User.
 
