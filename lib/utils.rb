@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 def user_avatar(id)
 	user=User.where(:Id=>id).first
 	if user
@@ -26,4 +28,10 @@ end
 
 def is_followed(from_id,to_id)
 	return Watch.where(:UserId=>from_id,:WatchedId=>to_id,:WatchType=>'user').first
+end
+
+def send_message(user_id,msg)
+	r=Redis.new
+	r.rpush(user_id,Marshal.dump(msg))
+	r.incr("#{user_id}_count")
 end

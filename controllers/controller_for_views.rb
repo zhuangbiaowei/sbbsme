@@ -144,7 +144,7 @@ get '/recent' do
 		r=Redis.new
 		id=@current_user.Id
 		while v=r.rpop(id)	do
-			@msgs << v
+			@msgs << Marshal.load(v)
 		end
 		r.del("#{id}_count")
 		@msg_count = 0
