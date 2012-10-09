@@ -1,4 +1,4 @@
-# encoding: utf-8
+require 'redis'
 
 def user_avatar(id)
 	user=User.where(:Id=>id).first

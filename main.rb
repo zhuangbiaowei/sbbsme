@@ -9,5 +9,6 @@ require './controllers/controller_for_views'
 require './controllers/controller_for_services'
 require './controllers/controller_for_redirect'
 require './lib/utils'
+require './lib/tasks'
 
 enable :sessions
