@@ -52,12 +52,16 @@ get '/view_article/:id' do
 	@tags=Tag.all
 	@id=params[:id]	
 	block=Block.where(:Id=>@id).first
-	@title=block.Subject
-	@html="<div class=\"component\">"+block.Body+"</div>\n"
-	Block.where(:ParentId=>@id).all.sort(Order: 1).each do |block|
-		@html=@html+"<div class=\"component\">"+block.Body+"</div>\n"
+	if block.Public==1
+		@title=block.Subject
+		@html="<div class=\"component\">"+block.Body+"</div>\n"
+		Block.where(:ParentId=>@id).all.sort(Order: 1).each do |block|
+			@html=@html+"<div class=\"component\">"+block.Body+"</div>\n"
+		end
+		haml :view_article
+	else
+		redirect '/home'
 	end
-	haml :view_article
 end
 
 get '/edit_post/:id' do
