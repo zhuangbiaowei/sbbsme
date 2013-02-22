@@ -23,6 +23,7 @@ class Block
 	field :RightBlockCount, type: Integer, default: 0
 	field :Created_on, type: DateTime, default: Time.now
 	field :Updated_on, type: DateTime, default: Time.now
+	field :Format, type: String, default: "Markdown"
 end
 
 class BlockBackup

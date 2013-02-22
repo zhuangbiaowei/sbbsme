@@ -66,6 +66,7 @@ post '/post' do
 		block=Block.new
 		block.Id=block.id
 		block.Subject=params[:subject]
+		block.Format=params[:format]
 		block.Body=params[:txtBody]
 		block.Created_on=DateTime.now
 		block.AuthorId=session[:current_user].Id
@@ -84,9 +85,10 @@ post '/edit_post/:id' do
 	if session[:current_user]
 		id=params[:id]
 		block=Block.where(:Id=>id).first
-		block.Subject=params[:subject]		
+		block.Subject=params[:subject]
 		block.Updated_on=DateTime.now
 		block.Public=params[:public]
+		block.Format=params[:format]
 		block.save
 		update_tags(id,params[:tags])
 		redirect "/post/"+block.Id

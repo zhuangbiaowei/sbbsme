@@ -11,6 +11,11 @@
 			Public?
 			%input{:type=>'checkbox',:name=>'public',:value=>'1'}
 			%br
+			Format:
+			%input{:type=>'radio',:name=>'format',:value=>'Markdown',:checked=>'true'}
+				Markdown
+			%input{:type=>'radio',:name=>'format',:value=>'HTML'}
+				HTML
 			%br
 			Summary:
 			%textarea{:id=>'txtBody',:name=>'txtBody',:cols=>"80",:rows=>"15"}
