@@ -12,15 +12,40 @@
 			%input{:type=>'checkbox',:name=>'public',:value=>'1'}
 			%br
 			Format:
-			%input{:type=>'radio',:name=>'format',:value=>'Markdown',:checked=>'true'}
-				Markdown
-			%input{:type=>'radio',:name=>'format',:value=>'HTML'}
-				HTML
+			%input{:type=>'radio',:name=>'format',:value=>'Markdown',:checked=>'true',:onclick=>"set_format('Markdown')"}
+			Markdown
+			%input{:type=>'radio',:name=>'format',:value=>'HTML',:onclick=>"set_format('HTML')"}
+			HTML
 			%br
 			Summary:
-			%textarea{:id=>'txtBody',:name=>'txtBody',:cols=>"80",:rows=>"15"}
-			%input{:type=>"submit",:value=>"submit"}
+			%textarea{:id=>'showTxtBody',:name=>'showTxtBody',:cols=>"80",:rows=>"15"}
+			%input{:id=>'txtBody',:name=>'txtBody',:type=>'hidden'}
+			#epiceditor{:style=>"height:400px"}
+			%input{:type=>"submit",:value=>"submit",:onclick=>"return check_format();"}
 %script{:type=>'text/javascript',:src=>'/javascripts/jquery-ui.min.js'}
 %script{:type=>'text/javascript',:src=>'/javascripts/jHtmlArea-0.7.0.js'}
+%script{:type=>'text/javascript',:src=>'/epiceditor/js/epiceditor.min.js'}
 %script{:type=>'text/javascript'}
-	$("#txtBody").width($("#container").width()-40);htmlarea_with_cache("#txtBody","new");
+	$("#showTxtBody").width($("#container").width()-40);
+	htmlarea_with_cache("#showTxtBody","new");
+	$(".jHtmlArea")[0].style.display='none';
+	var editor = new EpicEditor().load();
+	var txt_format="Markdown";
+	function check_format(){
+	if(txt_format=='Markdown'){
+	$("#txtBody")[0].value=JSON.parse(editor._storage.epiceditor).epiceditor.content;
+	} else {
+	$("#txtBody")[0].value=$("#showTxtBody")[0].value;
+	}
+	return true;
+	}
+	function set_format(format){
+	txt_format=format;
+	if(format=='Markdown'){
+	$(".jHtmlArea")[0].style.display='none';
+	$("#epiceditor")[0].style.display='';
+	}else{
+	$(".jHtmlArea")[0].style.display='';
+	$("#epiceditor")[0].style.display='none';
+	}
+	}
