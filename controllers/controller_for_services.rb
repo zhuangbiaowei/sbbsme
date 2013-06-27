@@ -374,3 +374,7 @@ post '/unfollow_user/:id' do
 	Watch.where(:UserId=>from_user_id,:WatchedId=>to_user_id,:WatchType=>'user').delete
 	"OK"
 end
+
+get '/articles' do
+        Block.where(:ParentId=>nil,:Type=>"topic",:Public=>1).sort(Updated_on: -1).to_a.to_json
+end
