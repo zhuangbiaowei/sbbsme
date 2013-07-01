@@ -5,6 +5,10 @@ get '/block/:id' do
 end
 
 get '/article/:id' do
+	unless session[:current_user]
+		nologin_user=User.new
+		session[:current_user]=nologin_user
+	end
 	id=params[:id]
 	main_block=Block.where(:Id=>id).first
 	muid=main_block.AuthorId
@@ -50,6 +54,9 @@ get '/article/:id' do
 				article[:users][right_block.AuthorId]=user_avatar(right_block.AuthorId)
 			end
 		end
+	end
+	if session[:current_user].Id==nil
+		session[:current_user]=nil
 	end
 	article.to_json
 end
