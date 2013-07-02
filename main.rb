@@ -8,6 +8,7 @@ require './config/oauth_config'
 require './controllers/controller_for_views'
 require './controllers/controller_for_services'
 require './controllers/controller_for_redirect'
+require './controllers/controller_for_api'
 require './lib/utils'
 require './lib/tasks'
 
