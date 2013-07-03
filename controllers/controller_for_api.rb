@@ -1,3 +1,18 @@
+get '/api/register/:uid/:name' do
+    uid = params[:uid]
+    name = params[:name]
+    avatar=params[:avatar]
+    db_user=User.where(:Id=>uid).first
+    unless db_user
+        db_user=User.new
+        db_user.Id=uid
+        db_user.Name=name
+        db_user.AvatarURL=avatar
+        db_user.save
+    end
+    return db_user.to_json
+end
+
 get '/api/:provider/callback' do
 	if params[:provider]=='weibo'
 		code=params[:code]
