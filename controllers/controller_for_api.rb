@@ -1,15 +1,18 @@
-get '/api/register/:uid/:name' do
+get '/api/login/:uid/:name' do
     uid = params[:uid]
     name = params[:name]
     avatar=params[:avatar]
+    type=params[:account_type]
     db_user=User.where(:Id=>uid).first
     unless db_user
         db_user=User.new
         db_user.Id=uid
         db_user.Name=name
         db_user.AvatarURL=avatar
+        db_user.Type=type
         db_user.save
     end
+    session[:current_user]=db_user
     return db_user.to_json
 end
 
@@ -25,7 +28,8 @@ get '/api/:provider/callback' do
                 	db_user.Id=uid
                 	db_user.Name=user["name"]
                 	db_user.AvatarURL=user["profile_image_url"]
-                	db_user.save
+                	db_user.Type="weibo"
+                        db_user.save
        		end
 	else
         	data=request.env['omniauth.auth'].to_hash
@@ -37,6 +41,7 @@ get '/api/:provider/callback' do
                		db_user.Name=data["info"]["name"]
                 	db_user.Email=data["info"]["email"]
                 	db_user.AvatarURL=data["info"]["image"]
+                        db_user.Type="google"
                 	db_user.save
         	end
 	end

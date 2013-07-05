@@ -19,7 +19,7 @@ require 'bundler/setup'
 require './main.rb'
 
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
-use Rack::Session::Cookie, :secret => ENV['RACK_COOKIE_SECRET']
+use Rack::Session::Cookie, :secret => ENV['RACK_COOKIE_SECRET'], :expire_after => 86400000
 use OmniAuth::Builder do
 	provider :google_oauth2, '876356697116.apps.googleusercontent.com', 'Sc9hk9vgfb5nQCYCSG1niCoM', {}
 end
