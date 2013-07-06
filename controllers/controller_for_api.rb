@@ -1,3 +1,5 @@
+require "redis"
+
 post '/api/login/:uid/:name' do
     uid = params[:uid]
     name = params[:name]
@@ -452,6 +454,20 @@ post '/api/article' do
 		update_tags(block.id,params[:tags])
 		CachedContent.where(:Id=>'new',:AuthorId=>session[:current_user].Id).delete
 		return block.Id
+	else
+		return "please login"
+	end
+end
+
+get '/api/msgs/count' do
+	return get_msg_count(session[:current_user]).to_s
+end
+
+get '/api/msgs' do
+	r=Redis.new
+	user=session[:current_user]
+	if user
+		return r.lrange(user.Id,0,-1).map{|v| Marshal.load(v)}.to_json
 	else
 		return "please login"
 	end

@@ -147,9 +147,8 @@ get '/recent' do
 	if @current_user	
 		r=Redis.new
 		id=@current_user.Id
-		while v=r.rpop(id)	do
-			@msgs << Marshal.load(v)
-		end
+		@msgs = r.lrange(id,0,-1).map! {|v| Marshal.load(v)}
+		r.ltrim(id,@msgs.length-20,-1) if @msgs.length>20
 		r.del("#{id}_count")
 		@msg_count = 0
 	end

@@ -31,15 +31,16 @@
 						%ul.nav
 							%li.active
 								%a{:href=>"/home"} Home
-							%li
-								%a{:href=>"/new"} Post New
-							%li
-								%a{:href=>"/recent"}
-									Recent
-									- if @msg_count.to_i>0
-										&nbsp;&nbsp;&nbsp;
-										%span.badge.unread
-											= @msg_count
+							- if @current_user
+								%li
+									%a{:href=>"/new"} Post New
+								%li
+									%a{:href=>"/recent"}
+										Recent
+										- if @msg_count.to_i>0
+											&nbsp;&nbsp;&nbsp;
+											%span.badge.unread
+												= @msg_count
 							%li.dropdown
 								%a{:href=>"#",:class=>"dropdown-toggle","data-toggle"=>"dropdown"}
 									Hot Tags
