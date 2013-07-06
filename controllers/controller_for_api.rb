@@ -1,4 +1,4 @@
-get '/api/login/:uid/:name' do
+post '/api/login/:uid/:name' do
     uid = params[:uid]
     name = params[:name]
     avatar=params[:avatar]
