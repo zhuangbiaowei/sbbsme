@@ -436,3 +436,23 @@ end
 get '/api/articles' do
         Block.where(:ParentId=>nil,:Type=>"topic",:Public=>1).sort(Updated_on: -1).to_a.to_json
 end
+
+post '/api/article' do
+	if session[:current_user]
+		block=Block.new
+		block.Id=block.id
+		block.Subject=params[:subject]
+		block.Format=params[:format]
+		block.Body=params[:txtBody]
+		block.Created_on=DateTime.now
+		block.AuthorId=session[:current_user].Id
+		block.Type="topic"
+		block.Public=params[:public].to_s.to_i
+		block.save
+		update_tags(block.id,params[:tags])
+		CachedContent.where(:Id=>'new',:AuthorId=>session[:current_user].Id).delete
+		return block.Id
+	else
+		return "please login"
+	end
+end
