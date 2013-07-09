@@ -20,6 +20,7 @@ get '/weibo/callback' do
 		db_user.Id=uid
 		db_user.Name=user["name"]
 		db_user.AvatarURL=user["profile_image_url"]
+		db_user.Type='weibo'
 		db_user.save
 	end
 	session[:current_user]=db_user
@@ -36,6 +37,7 @@ get '/auth/:provider/callback' do
 		db_user.Name=data["info"]["name"]
 		db_user.Email=data["info"]["email"]
 		db_user.AvatarURL=data["info"]["image"]
+		db_user.Type='google'
 		db_user.save
 	end
 	session[:current_user]=db_user

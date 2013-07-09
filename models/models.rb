@@ -4,7 +4,7 @@ class User
 	field :Name, type: String
 	field :Email, type: String
 	field :AvatarURL, type: String
-	field :Type, type: Integer
+	field :Type, type: String
 	field :Created_on, type: DateTime, default: Time.now
 	field :Updated_on, type: DateTime, default: Time.now
 end
