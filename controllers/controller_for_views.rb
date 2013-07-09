@@ -108,7 +108,7 @@ get '/admin_user/:id' do
 	@current_user=session[:current_user]
 	@msg_count = get_msg_count(@current_user)
 	if @current_user
-		if @current_user.Type==1
+		if @current_user.Type=="admin"
 			@tags=Tag.all
 			@user=User.where(:Id=>params[:id]).first
 			@topics=Block.where(:AuthorId=>params[:id],:Type=>'topic').all
@@ -126,7 +126,7 @@ get '/admin' do
 	@current_user=session[:current_user]
 	@msg_count = get_msg_count(@current_user)
 	if @current_user
-		if @current_user.Type==1
+		if @current_user.Type=="admin"
 			@tags=Tag.all
 			@users=User.all
 			@blocks=Block.all
