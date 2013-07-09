@@ -485,3 +485,7 @@ end
 get '/api/user/:id' do 
 	return User.where(:Id=>params[:id]).first.to_json
 end
+
+get '/api/tags' do
+	return Tag.all.to_json
+end
