@@ -74,7 +74,7 @@
 								%li
 									%a{:href=>"/profile"} Profile
 								%li.divider
-								- if @current_user.Type==1
+								- if @current_user.Type=='admin'
 									%li
 										%a{:href=>"/admin"} Admin
 									%li.divider
