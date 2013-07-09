@@ -472,3 +472,16 @@ get '/api/msgs' do
 		return "please login"
 	end
 end
+
+get '/api/follow/:from_id/:to_id' do
+	f1=is_followed(params[:from_id],params[:to_id])
+	f2=is_followed(params[:to_id],params[:from_id]);
+	return "both" if f1 && f2
+	return "from" if f1
+	return "to" if f2
+	return "no"
+end
+
+get '/api/user/:id' do 
+	return User.where(:Id=>params[:id]).first.to_json
+end
