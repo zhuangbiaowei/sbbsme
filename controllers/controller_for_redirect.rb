@@ -98,20 +98,3 @@ post '/edit_post/:id' do
 		redirect "/home"
 	end	
 end
-
-def update_tags(id,tags)
-	BlockTag.where(:BlockId=>id).delete
-	tags.split(",").each do |tag_name|
-		tag=Tag.where(:Name=>tag_name).first
-		unless tag
-			tag=Tag.new
-			tag.Name=tag_name
-			tag.Id=tag._id
-			tag.save
-		end
-		bt=BlockTag.new
-		bt.BlockId=id
-		bt.TagId=tag.Id
-		bt.save
-	end	
-end

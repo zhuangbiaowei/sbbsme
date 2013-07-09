@@ -35,3 +35,24 @@ def send_message(user_id,msg)
 	r.rpush(user_id,Marshal.dump(msg))
 	r.incr("#{user_id}_count")
 end
+
+def update_tags(id,tags)
+	BlockTag.where(:BlockId=>id).delete
+	tags.split(",").each do |tag_name|
+		tag=Tag.where(:Name=>tag_name).first
+		unless tag
+			tag=Tag.new
+			tag.Name=tag_name
+			tag.Id=tag._id
+			tag.BlockCount=1
+			tag.save
+		else
+			tag.BlockCount=tag.BlockCount+1
+			tag.save
+		end
+		bt=BlockTag.new
+		bt.BlockId=id
+		bt.TagId=tag.Id
+		bt.save
+	end	
+end

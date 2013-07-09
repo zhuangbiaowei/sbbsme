@@ -489,3 +489,19 @@ end
 get '/api/tags' do
 	return Tag.all.to_json
 end
+
+post '/api/edit_post/:id' do
+        if session[:current_user]
+                id=params[:id]
+                block=Block.where(:Id=>id).first
+                block.Subject=params[:subject]
+                block.Updated_on=DateTime.now
+                block.Public=params[:public]
+                block.Format=params[:format]
+                block.save
+                update_tags(id,params[:tags])
+		return "OK"
+        else
+		return "please login"
+        end
+end

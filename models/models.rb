@@ -62,6 +62,7 @@ class Tag
 	field :Id, type: String
 	field :Name, type: String
 	field :Description, type: String
+	field :BlockCount, type: Integer
 end
 
 class Watch
