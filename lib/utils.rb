@@ -56,3 +56,18 @@ def update_tags(id,tags)
 		bt.save
 	end	
 end
+
+def clean_tag(block_id)
+	BlockTag.where(:BlockId=>block_id).each do |bt|
+		tag=Tag.where(:Id=>bt.TagId).first
+		if tag
+			if tag.BlockCount==1
+				tag.delete
+			else
+				tag.BlockCount=tag.BlockCount-1
+				tag.save
+			end
+		end
+	end
+	BlockTag.where(:BlockId=>block_id).delete
+end

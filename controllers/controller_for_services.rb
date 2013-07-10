@@ -158,6 +158,7 @@ post '/delete_block' do
 	id=params[:id][1..-1]
 	block=Block.where(:Id=>id).first
 	unless block.ParentId
+		clean_tag(block.Id)
 		block.delete
 		BlockLink.where(:LeftId=>id).delete
 		BlockLink.where(:RightId=>id).all.each do |bl|

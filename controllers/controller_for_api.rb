@@ -211,6 +211,7 @@ post '/api/delete_block' do
 	id=params[:id][1..-1]
 	block=Block.where(:Id=>id).first
 	unless block.ParentId
+		clean_tag(block.Id)
 		block.delete
 		BlockLink.where(:LeftId=>id).delete
 		BlockLink.where(:RightId=>id).all.each do |bl|
@@ -487,7 +488,7 @@ get '/api/user/:id' do
 end
 
 get '/api/tags' do
-	return Tag.all.to_json
+	return Tag.all.sort(BlockCount: -1).to_json
 end
 
 post '/api/edit_post/:id' do
@@ -504,4 +505,13 @@ post '/api/edit_post/:id' do
         else
 		return "please login"
         end
+end
+
+get '/api/articles/tag/:tag' do
+	block_ids=[]
+	BlockTag.where(:TagId=>params[:tag]).each do |bt|
+		block_ids<<bt.BlockId
+	end
+	article_list=Block.in(:Id=>block_ids).where(:Public=>1).all
+	return article_list.to_json
 end
