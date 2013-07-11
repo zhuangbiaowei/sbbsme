@@ -35,12 +35,16 @@ get '/post/:id' do
 		@tags=Tag.all.sort(BlockCount: -1)
 		@id=params[:id]
 		block=Block.where(:Id=>@id).first
-		if @current_user
-			@is_author=(@current_user.Id.to_s==block.AuthorId.to_s||@current_user.Type==1)
+		if block
+			if @current_user
+				@is_author=(@current_user.Id.to_s==block.AuthorId.to_s||@current_user.Type==1)
+			else
+				@is_author=false
+			end
+			haml :post
 		else
-			@is_author=false
+			redirect '/home'
 		end
-		haml :post
 	else
 		redirect '/view_article/'+params[:id]
 	end
@@ -52,13 +56,17 @@ get '/view_article/:id' do
 	@tags=Tag.all.sort(BlockCount: -1)
 	@id=params[:id]	
 	block=Block.where(:Id=>@id).first
-	if block.Public==1
-		@title=block.Subject
-		@html="<div class=\"component\">"+block.Body+"</div>\n"
-		Block.where(:ParentId=>@id).all.sort(Order: 1).each do |block|
-			@html=@html+"<div class=\"component\">"+block.Body+"</div>\n"
-		end
-		haml :view_article
+	if block
+		if block.Public==1
+        	        @title=block.Subject
+                	@html="<div class=\"component\">"+block.Body+"</div>\n"
+                	Block.where(:ParentId=>@id).all.sort(Order: 1).each do |block|
+                	        @html=@html+"<div class=\"component\">"+block.Body+"</div>\n"
+               		end
+                	haml :view_article
+        	else
+        	        redirect '/home'
+	        end
 	else
 		redirect '/home'
 	end
