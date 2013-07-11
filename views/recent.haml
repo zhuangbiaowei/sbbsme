@@ -1,6 +1,6 @@
 .container
 	.well
 		%ul
-			- @msgs.each do |msg|
+			- (@msgs.length-1).downto(0) do |i|
 				%li
-					= msg
+					=@msgs[i]
