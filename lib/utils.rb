@@ -37,7 +37,7 @@ def send_message(user_id,msg)
 end
 
 def update_tags(id,tags)
-	BlockTag.where(:BlockId=>id).delete
+	clean_tag(id)
 	tags.split(",").each do |tag_name|
 		tag=Tag.where(:Name=>tag_name).first
 		unless tag
