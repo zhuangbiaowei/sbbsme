@@ -515,3 +515,7 @@ get '/api/articles/tag/:tag' do
 	article_list=Block.in(:Id=>block_ids).where(:Public=>1).all
 	return article_list.to_json
 end
+
+get '/api/last_article/:userid' do
+	return Block.where(:AuthorId=>params[:userid],:Public=>1,:Type=>'topic').sort(Updated_on: -1).first.to_json
+end
