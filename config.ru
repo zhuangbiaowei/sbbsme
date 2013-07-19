@@ -15,6 +15,7 @@ ENV['RACK_ENV']="development"
 
 require 'omniauth'
 require 'omniauth-google-oauth2'
+require 'omniauth-github'
 require 'bundler/setup'
 require './main.rb'
 
@@ -22,6 +23,7 @@ OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 use Rack::Session::Cookie, :secret => ENV['RACK_COOKIE_SECRET'], :expire_after => 86400000
 use OmniAuth::Builder do
 	provider :google_oauth2, '876356697116.apps.googleusercontent.com', 'Sc9hk9vgfb5nQCYCSG1niCoM', {}
+	provider :github, 'b5a77c294150ebb010f7','16bc9fbb4addbf80ef7731c37f1d18dfbdb7628f'
 end
 
 run Sinatra::Application

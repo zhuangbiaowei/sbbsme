@@ -64,10 +64,13 @@
 									%a{:href=>"#",:onclick=>"javascript:location='/weibo/login'"} Weibo Login
 								%li
 									%a{:href=>"#",:onclick=>"javascript:location='/auth/google_oauth2'"} Google Login
+								%li
+									%a{:href=>"#",:onclick=>"javascript:location='/auth/github'"} Github Login
 					- else
 						.btn-group.pull-right
 							%a.btn.dropdown-toggle{"data-toggle"=>"dropdown",:href=>"#"}
-								%img{:src=>"#{@current_user.AvatarURL}",:alt=>"#{@current_user.Name}",:width=>"16",:height=>"16"}
+								- if @current_user.AvatarURL
+									%img{:src=>"#{@current_user.AvatarURL}",:alt=>"#{@current_user.Name}",:width=>"16",:height=>"16"}
 								= @current_user.Name
 								%span.caret
 							%ul.dropdown-menu
