@@ -36,8 +36,13 @@ get '/auth/:provider/callback' do
 		db_user.Id=uid
 		db_user.Name=data["info"]["name"]
 		db_user.Email=data["info"]["email"]
-		db_user.AvatarURL=data["info"]["image"]
-		db_user.Type='google'
+		if(params[:provider]=="github")
+			db_user.AvatarURL=data["extra"]["raw_info"]["avatar_url"]
+			db_user.Type='github'
+		else
+			db_user.AvatarURL=data["info"]["image"]
+			db_user.Type='google'
+		end
 		db_user.save
 	end
 	session[:current_user]=db_user
