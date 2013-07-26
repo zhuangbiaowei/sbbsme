@@ -545,11 +545,11 @@ post '/api/upload_image' do
 	end
 end
 
-get '/api/delete_image/:filename' do
+get '/api/delete_image/:id' do
 	if session[:current_user]
-		img=Image.where(:FileName=>params[:filename])
+		img=Image.where(:Id=>params[:id])
 		if img
-			File.delete("public/"+img.AuthorId+"/"+img.FileName)
+			File.delete("public/uploads/"+img.AuthorId+"/"+img.FileName)
 			img.delete
 			return "OK"
 		else
