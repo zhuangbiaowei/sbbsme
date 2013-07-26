@@ -549,6 +549,7 @@ get '/api/delete_image/:id' do
 	if session[:current_user]
 		img=Image.where(:Id=>params[:id])
 		if img
+			img=img[0];
 			File.delete("public/uploads/"+img.AuthorId+"/"+img.FileName)
 			img.delete
 			return "OK"
