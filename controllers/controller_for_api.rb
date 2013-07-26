@@ -519,3 +519,51 @@ end
 get '/api/last_article/:userid' do
 	return Block.where(:AuthorId=>params[:userid],:Public=>1,:Type=>'topic').sort(Updated_on: -1).limit(-1).to_a[0].to_json
 end
+
+get "/upload" do
+	@tags=[]
+	haml :upload
+end
+
+post '/api/upload_image' do
+	if session[:current_user]
+		img=Image.new
+		img.Id=img.id.to_s
+		img.AuthorId=session[:current_user].Id
+		filename=params['file'][:filename]
+		ext_name=filename.split(".")[1]
+		img.FileName=img.Id.to_s+"."+ext_name.to_s
+		img.URL="/uploads/"+img.AuthorId+"/"+img.FileName
+		img.save
+		Dir.mkdir("public/uploads/"+img.AuthorId) unless Dir.exist?("public/uploads/"+img.AuthorId)
+		File.open('public/uploads/'+img.AuthorId+"/"+img.FileName, "w") do |f|
+			f.write(params['file'][:tempfile].read)
+		end
+		return img.URL
+	else
+		return "please login"
+	end
+end
+
+get '/api/delete_image/:filename' do
+	if session[:current_user]
+		img=Image.where(:FileName=>params[:filename])
+		if img
+			File.delete("public/"+img.AuthorId+"/"+img.FileName)
+			img.delete
+			return "OK"
+		else
+			return "Not exist"
+		end
+	else
+		return "please login"
+	end
+end
+
+get '/api/get_images' do
+        if session[:current_user]
+                return Image.where(:AuthorId=>session[:current_user].Id).to_json
+        else
+                return "please login"
+        end
+end

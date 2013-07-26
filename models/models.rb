@@ -9,6 +9,15 @@ class User
 	field :Updated_on, type: DateTime, default: Time.now
 end
 
+class Image
+	include Mongoid::Document
+	field :Id, type: String
+	field :FileName, type: String
+	field :URL, type: String
+	field :AuthorId, type: String
+	field :Uplad_on, type: DateTime, default: Time.now
+end
+
 class Block
 	include Mongoid::Document
 	field :Id, type: String

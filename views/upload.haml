@@ -1,0 +1,8 @@
+%html
+  %body
+    %h1 File uploader!
+    %form(method="post" action='/api/upload_image' enctype='multipart/form-data')   
+      %input(type='file' name='file')    
+      %br
+      %input(type='submit' value='Upload!')
+
