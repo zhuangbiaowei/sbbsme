@@ -15,7 +15,7 @@ class Image
 	field :FileName, type: String
 	field :URL, type: String
 	field :AuthorId, type: String
-	field :Uplad_on, type: DateTime, default: Time.now
+	field :Upload_on, type: DateTime, default: Time.now
 end
 
 class Block
