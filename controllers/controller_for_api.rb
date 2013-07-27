@@ -440,6 +440,12 @@ get '/api/articles' do
         Block.where(:ParentId=>nil,:Type=>"topic",:Public=>1).sort(Updated_on: -1).to_a.to_json
 end
 
+get '/api/articles/:page/:pagesize' do
+	skip=(params[:page].to_i-1)*params[:pagesize].to_i
+	count=params[:pagesize].to_i
+	Block.where(:ParentId=>nil,:Type=>"topic",:Public=>1).sort(Updated_on: -1).skip(skip).limit(count).to_a.to_json
+end
+
 post '/api/article' do
 	if session[:current_user]
 		block=Block.new
@@ -516,6 +522,17 @@ get '/api/articles/tag/:tag' do
 	return article_list.to_json
 end
 
+get '/api/articles/tag/:tag/:page/:pagesize' do
+	block_ids=[]
+        BlockTag.where(:TagId=>params[:tag]).each do |bt|
+                block_ids<<bt.BlockId
+        end
+	skip=(params[:page].to_i-1)*params[:pagesize].to_i
+        count=params[:pagesize].to_i
+	article_list=Block.in(:Id=>block_ids).where(:Public=>1).skip(skip).limit(count).to_a
+	return article_list.to_json
+end
+
 get '/api/last_article/:userid' do
 	return Block.where(:AuthorId=>params[:userid],:Public=>1,:Type=>'topic').sort(Updated_on: -1).limit(-1).to_a[0].to_json
 end
@@ -564,6 +581,16 @@ end
 get '/api/get_images' do
         if session[:current_user]
                 return Image.where(:AuthorId=>session[:current_user].Id).to_json
+        else
+                return "please login"
+        end
+end
+
+get '/api/get_images/:page/:pagesize' do
+	skip=(params[:page].to_i-1)*params[:pagesize].to_i
+	count=params[:pagesize].to_i
+	if session[:current_user]
+                return Image.where(:AuthorId=>session[:current_user].Id).skip(skip).limit(count).to_json
         else
                 return "please login"
         end
