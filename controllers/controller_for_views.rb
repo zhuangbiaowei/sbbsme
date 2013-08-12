@@ -59,9 +59,9 @@ get '/view_article/:id' do
 	if block
 		if block.Public==1
         	        @title=block.Subject
-                	@html="<div class=\"component\">"+block.Body+"</div>\n"
+                	@html="<div class=\"component "+block.Format+"\">"+block.Body+"</div>\n"
                 	Block.where(:ParentId=>@id).all.sort(Order: 1).each do |block|
-                	        @html=@html+"<div class=\"component\">"+block.Body+"</div>\n"
+                	        @html=@html+"<div class=\"component "+block.Format+"\">"+block.Body+"</div>\n"
                		end
                 	haml :view_article
         	else

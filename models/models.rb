@@ -90,3 +90,15 @@ class CachedContent
 	field :Subject, type: String
 	field :Body, type: String
 end
+
+class PrivateMessage
+	include Mongoid::Document
+	field :Id, type: Integer
+	field :FromUserId, type: String
+	field :FromUserName, type: String
+	field :ToUserId, type: String
+	field :ToUserName, type: String
+	field :Format, type: String
+	field :Body, type: String
+	field :Created_on, type: DateTime, default: Time.now
+end
