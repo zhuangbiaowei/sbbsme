@@ -611,6 +611,7 @@ post '/api/send_msg/:receiver_user_id' do
 			pm.Format=params[:format]
 			pm.Body=params[:body]
 			pm.save
+			return "OK"
 		else
 			return "reciver user not exist"
 		end
