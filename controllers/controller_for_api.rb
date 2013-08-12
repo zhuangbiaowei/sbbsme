@@ -595,3 +595,34 @@ get '/api/get_images/:page/:pagesize' do
                 return "please login"
         end
 end
+
+post '/api/send_msg/:receiver_user_id' do
+	if session[:current_user]
+		ru=User.where(:Id=>params[:receiver_user_id]).first
+		if ru
+			r=Redis.new
+			last_id=r.incr("private:msg:id")
+			pm=PrivateMessage.new
+			pm.Id=last_id
+			pm.FromUserId=session[:current_user].Id
+			pm.FromUserName=session[:current_user].Name
+			pm.ToUserId=ru.Id
+			pm.ToUserName=ru.Name
+			pm.Format=params[:format]
+			pm.Body=params[:body]
+			pm.save
+		else
+			return "reciver user not exist"
+		end
+	else
+		return "please login"
+	end
+end
+
+get '/api/query_msg/:last_message_id' do
+	if session[:current_user]
+		return PrivateMessage.where(:ToUserId=>session[:current_user].Id,:Id.gt=>params[:last_message_id]).all.to_json
+	else
+		return "please login"
+	end
+end
