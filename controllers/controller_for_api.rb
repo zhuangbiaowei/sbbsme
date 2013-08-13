@@ -620,9 +620,11 @@ post '/api/send_msg/:receiver_user_id' do
 	end
 end
 
-get '/api/query_msg/:last_message_id' do
+get '/api/query_msg/:last_message_id/:page/:pagesize' do
 	if session[:current_user]
-		return PrivateMessage.where(:ToUserId=>session[:current_user].Id,:Id.gt=>params[:last_message_id]).all.to_json
+		skip=(params[:page].to_i-1)*params[:pagesize].to_i
+		count=params[:pagesize].to_i
+		return PrivateMessage.where(:ToUserId=>session[:current_user].Id,:Id.gt=>params[:last_message_id]).skip(skip).limit(count).to_json
 	else
 		return "please login"
 	end
