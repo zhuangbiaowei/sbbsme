@@ -620,11 +620,25 @@ post '/api/send_msg/:receiver_user_id' do
 	end
 end
 
-get '/api/query_msg/:last_message_id/:page/:pagesize' do
+get '/api/check_new_msg/:last_message_id/:page/:pagesize' do
 	if session[:current_user]
 		skip=(params[:page].to_i-1)*params[:pagesize].to_i
 		count=params[:pagesize].to_i
-		return PrivateMessage.where(:ToUserId=>session[:current_user].Id,:Id.gt=>params[:last_message_id]).skip(skip).limit(count).to_json
+		return PrivateMessage.where(:ToUserId=>session[:current_user].Id,:Id.gt=>params[:last_message_id])
+			.sort(:Id=>-1).skip(skip).limit(count).to_json
+	else
+		return "please login"
+	end
+end
+
+get '/api/get_private_msgs/:last_message_id/:userid/:page/:pagesize' do
+	if session[:current_user]
+		skip=(params[:page].to_i-1)*params[:pagesize].to_i
+                count=params[:pagesize].to_i
+		PrivateMessage.where(:Id.gt=>params[:last_message_id])
+			.or(:FromUserId=>params[:userid],:ToUserId=>session[:current_user].Id)
+			.or(:FromUserId=>session[:current_user].Id,:ToUserId=>params[:userid])
+			.sort(:Id=>-1).skip(skip).limit(count).to_json
 	else
 		return "please login"
 	end
