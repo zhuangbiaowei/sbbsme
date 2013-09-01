@@ -1,0 +1,31 @@
+#send_msg{:title=>"Send Message",:style=>"display:none;"}
+	%textarea{:id=>"msg",:name=>"msg",:style=>"width: 250px; height: 60px;"}
+.container-fluid
+	- @inbox.each do |key,value|
+		- u = JSON.parse(value.to_s)
+		- list = @new_msg[key]
+		.row-fluid
+			.span2
+				&nbsp;
+			.span1
+				%a{:href=>"/user/"+u["Id"]}
+					%img{:src=>u["AvatarURL"],:width=>"32"}
+				%br
+				%a{:href=>"/user/"+u["Id"]}
+					=u["Name"]
+			.well.span7
+				- if list
+					-list.each do |msg|
+						%div{:class=>msg.Format}
+							%b
+								= msg.Body
+				- else
+					%div{:class=>u["LastMsg"]["Format"]}
+						= u["LastMsg"]["Body"]
+				%div{:style=>"text-align:right;"}
+					%a{:href=>"#",:onclick=>"send_message('"+u["Id"]+"');"} Send
+					&nbsp;
+					%a{:href=>"/private_msg/"+u["Id"]} All Message
+			.span2
+				&nbsp;
+%script{:src=>"/javascripts/user.js"}

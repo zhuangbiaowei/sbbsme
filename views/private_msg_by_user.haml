@@ -1,0 +1,30 @@
+.container-fluid
+	- @private_msgs.each do |msg|
+		- if msg.FromUserId==@me.Id
+			.row-fluid
+				.span3
+					&nbsp;
+				.well.span6
+					%div{:class=>msg.Format}
+						= msg.Body
+				.span1
+					%img{:src=>@me.AvatarURL,:width=>"32"}
+					%br
+					=@me.Name
+				.span2
+					&nbsp;
+		- else
+			.row-fluid
+				.span2
+					&nbsp;
+				.span1
+					%a{:href=>"/user/"+@user.Id}
+						%img{:src=>@user.AvatarURL,:width=>"32"}
+					%br
+					%a{:href=>"/user/"+@user.Id}
+						=@user.Name
+				.well.span6
+					%div{:class=>msg.Format}
+						= msg.Body
+				.span3
+					&nbsp;

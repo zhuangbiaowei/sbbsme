@@ -5,6 +5,7 @@ get '/home' do
 	@article_list=Block.where(:ParentId=>nil,:Type=>"topic",:Public=>1).sort(Updated_on: -1).to_a
 	@current_user=session[:current_user]
 	@msg_count = get_msg_count(@current_user)
+	@private_msg_count = get_private_msg_count(@current_user)
 	haml :home
 end
 
@@ -12,6 +13,7 @@ get '/tags/:id' do
 	@tags=Tag.all.sort(BlockCount: -1)
 	@current_user=session[:current_user]
 	@msg_count = get_msg_count(@current_user)
+	@private_msg_count = get_private_msg_count(@current_user)
 	id=params[:id]
 	block_ids=[]
 	BlockTag.where(:TagId=>id).all.each do |bt|
@@ -25,12 +27,14 @@ get '/new' do
 	@current_user=session[:current_user]
 	@tags=Tag.all.sort(BlockCount: -1)
 	@msg_count = get_msg_count(@current_user)
+	@private_msg_count = get_private_msg_count(@current_user)
 	haml :new
 end
 
 get '/post/:id' do
 	@current_user=session[:current_user]
 	@msg_count = get_msg_count(@current_user)
+	@private_msg_count = get_private_msg_count(@current_user)
 	if @current_user
 		@tags=Tag.all.sort(BlockCount: -1)
 		@id=params[:id]
@@ -53,6 +57,7 @@ end
 get '/view_article/:id' do
 	@current_user=session[:current_user]
 	@msg_count = get_msg_count(@current_user)
+	@private_msg_count = get_private_msg_count(@current_user)
 	@tags=Tag.all.sort(BlockCount: -1)
 	@id=params[:id]	
 	block=Block.where(:Id=>@id).first
@@ -75,6 +80,7 @@ end
 get '/edit_post/:id' do
 	@current_user=session[:current_user]
 	@msg_count = get_msg_count(@current_user)
+	@private_msg_count = get_private_msg_count(@current_user)
 	@tags=Tag.all.sort(BlockCount: -1)
 	@id=params[:id]
 	@block=Block.where(:Id=>@id).first
@@ -85,6 +91,7 @@ end
 get '/profile' do
 	@current_user=session[:current_user]
 	@msg_count = get_msg_count(@current_user)
+	@private_msg_count = get_private_msg_count(@current_user)
 	@tags=Tag.all.sort(BlockCount: -1)
 	@topics=Block.where(:AuthorId=>@current_user.Id,:Type=>'topic').all
 	@blocks=Block.in(Type:['comment','clone']).where(:AuthorId=>@current_user.Id).all
@@ -94,6 +101,7 @@ end
 get '/user/:id' do
 	@current_user=session[:current_user]
 	@msg_count = get_msg_count(@current_user)
+	@private_msg_count = get_private_msg_count(@current_user)
 	@tags=Tag.all.sort(BlockCount: -1)
 	@user=User.where(:Id=>params[:id]).first
 	@topics=Block.where(:AuthorId=>params[:id],:Public=>1,:Type=>'topic').all
@@ -115,6 +123,7 @@ end
 get '/admin_user/:id' do
 	@current_user=session[:current_user]
 	@msg_count = get_msg_count(@current_user)
+	@private_msg_count = get_private_msg_count(@current_user)
 	if @current_user
 		if @current_user.Type=="admin"
 			@tags=Tag.all.sort(BlockCount: -1)
@@ -133,6 +142,7 @@ end
 get '/admin' do
 	@current_user=session[:current_user]
 	@msg_count = get_msg_count(@current_user)
+	@private_msg_count = get_private_msg_count(@current_user)
 	if @current_user
 		if @current_user.Type=="admin"
 			@tags=Tag.all.sort(BlockCount: -1)
@@ -148,10 +158,10 @@ get '/admin' do
 end
 
 get '/recent' do
-	@current_user=session[:current_user]	
+	@current_user=session[:current_user]
+	@private_msg_count = get_private_msg_count(@current_user)
 	@tags=Tag.all.sort(BlockCount: -1)
 	@msgs = []
-
 	if @current_user	
 		r=Redis.new
 		id=@current_user.Id
@@ -160,6 +170,33 @@ get '/recent' do
 		r.del("#{id}_count")
 		@msg_count = 0
 	end
-
 	haml :recent
+end
+
+get '/private_msg' do
+	@current_user=session[:current_user]
+	@msg_count = get_msg_count(@current_user)
+	@tags=Tag.all.sort(BlockCount: -1)
+	if @current_user
+		@inbox,@new_msg=get_private_msg(@current_user)
+		haml :private_msg
+	else
+		redirect '/home'
+	end
+end
+
+get '/private_msg/:userid' do
+	@current_user=session[:current_user]
+	@msg_count = get_msg_count(@current_user)
+	@tags=Tag.all.sort(BlockCount: -1)
+	if @current_user
+		@me=@current_user
+		@user=User.where(:Id=>params[:userid]).first
+		@private_msgs = PrivateMessage.where(:Id.gt=>0)
+			.or(:FromUserId=>params[:userid],:ToUserId=>session[:current_user].Id)
+			.or(:FromUserId=>session[:current_user].Id,:ToUserId=>params[:userid])
+		haml :private_msg_by_user
+	else
+		redirect '/home'
+	end
 end

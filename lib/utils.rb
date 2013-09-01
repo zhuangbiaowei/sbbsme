@@ -1,4 +1,5 @@
 require 'redis'
+require 'json'
 
 def user_avatar(id)
 	user=User.where(:Id=>id).first
@@ -23,6 +24,45 @@ def get_msg_count(user)
 		return r.exists("#{user.Id}_count")? r.get("#{user.Id}_count") : 0
 	else
 		return 0
+	end
+end
+
+def get_private_msg_count(user)
+	if user
+		r=Redis.new
+		last_id=r.get("lastid:"+user.Id)
+		last_id=0 unless last_id
+		return PrivateMessage.where(:ToUserId=>user.Id,:Id.gt=>last_id).count
+	else
+		return 0
+	end
+end
+
+def get_private_msg(user)
+	if user
+		r=Redis.new
+		last_id=r.get("lastid:"+user.Id).to_i
+		last_id=0 unless last_id
+		inbox=r.hgetall("inbox:"+user.Id)
+		new_msg={}
+		PrivateMessage.where(:ToUserId=>user.Id,:Id.gt=>last_id).sort(Created_on: 1).each do |pm|
+			if pm.Id>last_id
+				last_id=pm.Id
+			end
+			u=User.where(:Id=>pm.FromUserId).first
+			u.LastMsg=pm
+			inbox[pm.FromUserId]=u.to_json
+			r.hset("inbox:"+user.Id,pm.FromUserId,u.to_json)
+			unless new_msg[pm.FromUserId]
+				new_msg[pm.FromUserId]=[pm]
+			else
+				new_msg[pm.FromUserId]<<pm
+			end
+		end
+		r.set("lastid:"+user.Id,last_id)
+		return inbox,new_msg
+	else
+		return {},{}
 	end
 end
 

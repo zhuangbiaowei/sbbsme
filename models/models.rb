@@ -1,3 +1,15 @@
+class PrivateMessage
+	include Mongoid::Document
+	field :Id, type: Integer
+	field :FromUserId, type: String
+	field :FromUserName, type: String
+	field :ToUserId, type: String
+	field :ToUserName, type: String
+	field :Format, type: String
+	field :Body, type: String
+	field :Created_on, type: DateTime, default: Time.now
+end
+
 class User
 	include Mongoid::Document
 	field :Id, type: String
@@ -5,6 +17,7 @@ class User
 	field :Email, type: String
 	field :AvatarURL, type: String
 	field :Type, type: String
+	field :LastMsg, type: PrivateMessage
 	field :Created_on, type: DateTime, default: Time.now
 	field :Updated_on, type: DateTime, default: Time.now
 end
@@ -89,16 +102,4 @@ class CachedContent
 	field :AuthorId, type: String
 	field :Subject, type: String
 	field :Body, type: String
-end
-
-class PrivateMessage
-	include Mongoid::Document
-	field :Id, type: Integer
-	field :FromUserId, type: String
-	field :FromUserName, type: String
-	field :ToUserId, type: String
-	field :ToUserName, type: String
-	field :Format, type: String
-	field :Body, type: String
-	field :Created_on, type: DateTime, default: Time.now
 end

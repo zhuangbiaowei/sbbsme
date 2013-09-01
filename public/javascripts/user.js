@@ -13,3 +13,24 @@ function follow_user(to_user_id,from_user_id){
 		}
 	});
 }
+
+function send_message(receiver_user_id){
+	$( "#send_msg" ).dialog({
+		resizable: false,
+		height: 180,
+		modal: true,
+		buttons: {
+			"Send": function() {
+				$(this).dialog("close");
+				$.post("/api/send_msg/"+receiver_user_id,{"format":"Markdown","body":$("#msg")[0].value},function(data, textStatus, jqXHR){
+					if(data=="OK"){
+						alert("Send success!");
+					}
+				});
+			},
+			Cancel: function() {
+				$(this).dialog("close");
+			}
+		}
+	});
+}

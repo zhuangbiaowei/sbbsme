@@ -1,3 +1,5 @@
+#send_msg{:title=>"Send Message",:style=>"display:none;"}
+	%textarea{:id=>"msg",:name=>"msg",:style=>"width: 250px; height: 60px;"}
 .container
 	.container-fluid
 		.row-fluid
@@ -16,6 +18,9 @@
 				- if @is_me
 					%button.btn
 						This is me
+				- else
+					%button.btn{:onclick=>"send_message('"+@user.Id+"');"}
+						Send Msg
 			.span5.well
 				%h3 Posts
 				%ul
