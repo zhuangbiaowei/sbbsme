@@ -45,7 +45,7 @@ def get_private_msg(user)
 		last_id=0 unless last_id
 		inbox=r.hgetall("inbox:"+user.Id)
 		new_msg={}
-		PrivateMessage.where(:ToUserId=>user.Id,:Id.gt=>last_id).sort(Created_on: 1).each do |pm|
+		PrivateMessage.where(:ToUserId=>user.Id,:Id.gt=>last_id).sort(Id: -1).each do |pm|
 			if pm.Id>last_id
 				last_id=pm.Id
 			end

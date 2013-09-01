@@ -195,6 +195,7 @@ get '/private_msg/:userid' do
 		@private_msgs = PrivateMessage.where(:Id.gt=>0)
 			.or(:FromUserId=>params[:userid],:ToUserId=>session[:current_user].Id)
 			.or(:FromUserId=>session[:current_user].Id,:ToUserId=>params[:userid])
+			.sort(Id: -1)
 		haml :private_msg_by_user
 	else
 		redirect '/home'
