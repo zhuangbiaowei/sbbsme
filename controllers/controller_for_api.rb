@@ -636,9 +636,10 @@ get '/api/get_private_msgs/:userid/:page/:pagesize' do
 	if session[:current_user]
 		skip=(params[:page].to_i-1)*params[:pagesize].to_i
                 count=params[:pagesize].to_i
-		PrivateMessage.where(:FromUserId=>params[:userid],:ToUserId=>session[:current_user].Id)
+		return PrivateMessage.where(:Id.gt=>0)
+			.or(:FromUserId=>params[:userid],:ToUserId=>session[:current_user].Id)
 			.or(:FromUserId=>session[:current_user].Id,:ToUserId=>params[:userid])
-			.sort(:Id=>-1).skip(skip).limit(count).to_json
+			.sort(Id: -1).skip(skip).limit(count).to_json
 	else
 		return "please login"
 	end
