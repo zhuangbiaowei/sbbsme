@@ -5,7 +5,7 @@
 				.span3
 					&nbsp;
 				.well.span6
-					%div{:class=>msg.Format}
+					.message
 						= msg.Body
 				.span1
 					%img{:src=>@me.AvatarURL,:width=>"32"}
@@ -24,7 +24,7 @@
 					%a{:href=>"/user/"+@user.Id}
 						=@user.Name
 				.well.span6
-					%div{:class=>msg.Format}
+					.message
 						= msg.Body
 				.span3
 					&nbsp;

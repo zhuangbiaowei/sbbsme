@@ -16,11 +16,11 @@
 			.well.span7
 				- if list
 					-list.each do |msg|
-						%div{:class=>msg.Format}
+						.message
 							%b
 								= msg.Body
 				- else
-					%div{:class=>u["LastMsg"]["Format"]}
+					.message
 						= u["LastMsg"]["Body"]
 				%div{:style=>"text-align:right;"}
 					%a{:href=>"#",:onclick=>"send_message('"+u["Id"]+"');"} Send

@@ -608,9 +608,10 @@ post '/api/send_msg/:receiver_user_id' do
 			pm.FromUserName=session[:current_user].Name
 			pm.ToUserId=ru.Id
 			pm.ToUserName=ru.Name
-			pm.Format=params[:format]
 			pm.Body=params[:body]
 			pm.save
+			ru.LastMsg=pm
+			r.hset("inbox:"+session[:current_user].Id,ru.Id,ru.to_json)
 			return "OK"
 		else
 			return "reciver user not exist"

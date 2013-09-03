@@ -5,7 +5,6 @@ class PrivateMessage
 	field :FromUserName, type: String
 	field :ToUserId, type: String
 	field :ToUserName, type: String
-	field :Format, type: String
 	field :Body, type: String
 	field :Created_on, type: DateTime, default: Time.now
 end
