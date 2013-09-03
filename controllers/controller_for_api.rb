@@ -631,14 +631,22 @@ get '/api/check_new_msg/:last_message_id/:page/:pagesize' do
 	end
 end
 
-get '/api/get_private_msgs/:last_message_id/:userid/:page/:pagesize' do
+get '/api/get_private_msgs/:userid/:page/:pagesize' do
 	if session[:current_user]
 		skip=(params[:page].to_i-1)*params[:pagesize].to_i
                 count=params[:pagesize].to_i
-		PrivateMessage.where(:Id.gt=>params[:last_message_id])
-			.or(:FromUserId=>params[:userid],:ToUserId=>session[:current_user].Id)
+		PrivateMessage.where(:FromUserId=>params[:userid],:ToUserId=>session[:current_user].Id)
 			.or(:FromUserId=>session[:current_user].Id,:ToUserId=>params[:userid])
 			.sort(:Id=>-1).skip(skip).limit(count).to_json
+	else
+		return "please login"
+	end
+end
+
+get '/api/inbox' do
+	if session[:current_user]
+		r=Redis.new
+		return r.hgetall("inbox:"+session[:current_user].Id).to_json
 	else
 		return "please login"
 	end
