@@ -17,4 +17,6 @@
 			- @article_list.each do |article|
 				%li
 					%a{:href=>"/post/#{article.Id}"}=article.Subject
-					%p= article.Body
+                    %div{:class=>"component "+article.Format"}=article.Body
+
+  %script{:src=>'/javascripts/markdown-show.js'}
