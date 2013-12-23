@@ -1,20 +1,22 @@
 <!doctype html>
 %html
-	%head
-		%title Welcome to Super BBS
-		%meta{"http-equiv"=>"content-type",:content=>"text/html;charset=utf-8"}
-		%link{:rel=>"stylesheet",:href=>"/stylesheets/main.css"}
-		%script{:type=>'text/javascript',:src=>'/javascripts/jquery.min.js'}
-	%body
-		#nav_bar
-			#home
-				%a{:href=>'/'} Home
-			%a{:href=>"/new",:class=>"nav_link"}
-				New Post			
-			#wb_connect_btn
-				= @login_html
-		%ul
-			- @article_list.each do |article|
-				%li
-					%a{:href=>"/post/#{article.Id}"}=article.Subject
-					%p= article.Body
+    %head
+        %title Welcome to Super BBS
+        %meta{"http-equiv"=>"content-type",:content=>"text/html;charset=utf-8"}
+        %link{:rel=>"stylesheet",:href=>"/stylesheets/main.css"}
+        %script{:type=>'text/javascript',:src=>'/javascripts/jquery.min.js'}
+    %body
+        #nav_bar
+            #home
+                %a{:href=>'/'} Home
+            %a{:href=>"/new",:class=>"nav_link"}
+                New Post            
+            #wb_connect_btn
+                = @login_html
+        %ul
+            - @article_list.each do |article|
+                %li
+                    %a{:href=>"/post/#{article.Id}"}=article.Subject
+                    %div{:class=>"component "+article.Format"}=article.Body
+
+  %script{:src=>'/javascripts/markdown-show.js'}
