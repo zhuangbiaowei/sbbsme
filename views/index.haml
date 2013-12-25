@@ -17,7 +17,7 @@
             - @article_list.each do |article|
                 %li
                     %a{:href=>"/post/#{article.Id}"}=article.Subject
-                    %div{:class=>"component "+article.Format"}=article.Body
+                    %div{:class=>"component "+article.Format}=article.Body
 
     %script{:src=>'/epiceditor/js/epiceditor.js'}
     %script{:src=>'/javascripts/markdown-show.js'}
