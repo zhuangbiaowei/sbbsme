@@ -6,5 +6,6 @@
                     %a{:href=>"/post/#{article.Id}"}=article.Subject
                     %div{:class=>"component "+article.Format}=article.Body
 
+%script{:src=>'/epiceditor/js/epiceditor.js'}
 %script{:src=>'/javascripts/markdown-show.js'}
 %script{:src=>"/javascripts/home.js"}
