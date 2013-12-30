@@ -6186,3 +6186,6 @@ footer {
   text-decoration: none;
 }
 
+#main img {
+  max-height: 200px;
+}
